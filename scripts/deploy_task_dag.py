@@ -19,7 +19,7 @@ def main(session: Session, database_name: str, schema_name: str, notebook_projec
     warehouse_name = "DEMO_WH"
     dag_name = "DEMO_DAG"
     compute_pool = "SYSTEM_COMPUTE_POOL_CPU"
-    runtime = "V2.5-CPU-PY3.12"
+    runtime = "V2.8-CPU-PY3.12"
     artifact_repository = "SNOWFLAKE.SNOWPARK.PYPI_SHARED_REPOSITORY"
 
     api_root = Root(session)
