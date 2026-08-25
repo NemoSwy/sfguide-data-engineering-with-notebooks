@@ -1,0 +1,402 @@
+I want to build a Python proof of concept that converts exported PathWise HTML model documentation into a machine-readable dependency graph.
+
+## Background
+
+The PathWise model documentation contains a hierarchical structure similar to:
+
+* Model
+
+  * Data Sources
+
+    * market_data
+    * inforce
+    * params
+    * actuarial assumptions
+    * etc.
+  * Model Libraries
+
+    * Library
+
+      * Inputs
+      * Calculations
+
+        * Dictionary
+        * Computation
+        * Projection
+      * Outputs
+      * User-defined functions
+  * Project-level Calculations
+
+    * Dictionary
+    * Computation
+    * Projection
+  * Project-level User-defined functions
+  * Calculation Results
+
+Inputs, calculations, projections, and outputs contain expressions that reference other model objects.
+
+Examples of relationships may look conceptually like:
+
+`N_HYBRID_INDEX = Constants.N_HYBRID_INDEX`
+
+or
+
+`forward_rate = Projection.revised_short_rate`
+
+or a formula may reference several variables and/or call a user-defined function.
+
+The exported HTML also appears to contain hyperlinks between referenced model objects. If hyperlinks contain resolved target information, prefer using the hyperlink target instead of trying to infer the target from text.
+
+## Goal
+
+Build a Python parser that automatically extracts:
+
+1. model components/nodes
+2. direct dependency relationships/edges
+3. variable aliases / mappings where possible
+4. downstream dependency impact using graph traversal
+
+Do NOT manually generate complete dependency paths. Only extract direct relationships. Complete downstream paths should be derived programmatically from the direct-edge graph.
+
+---
+
+## Step 1 — Inspect the HTML first
+
+Before writing the full parser:
+
+1. Inspect several exported HTML files/pages representing:
+
+   * a Data Source
+   * a Library Input
+   * Dictionary
+   * Computation
+   * Projection
+   * Output
+   * Library-level UDF
+   * Project-level calculation
+   * Project-level UDF
+
+2. Determine:
+
+   * DOM structure
+   * headings/classes/IDs
+   * how tables are represented
+   * how Name, Value, Expression, Type, Shape, etc. are represented
+   * whether references use `<a href>` links
+   * what the `href` contains
+   * whether different PathWise object types use consistent HTML structures
+
+3. Print a short summary of the structures you find before implementing extraction.
+
+Do not invent CSS selectors before inspecting the actual HTML.
+
+---
+
+## Step 2 — Create a Node table
+
+Create one record for each meaningful PathWise object.
+
+Suggested schema:
+
+`node_id`
+`model`
+`name`
+`native_type`
+`scope`
+`parent_id`
+`source_file`
+`source_anchor`
+`expression`
+`data_type`
+
+Possible `native_type` values include:
+
+* MODEL
+* DATA_SOURCE
+* DATA_SOURCE_FIELD
+* LIBRARY
+* LIBRARY_INPUT
+* DICTIONARY
+* DICTIONARY_FIELD
+* COMPUTATION
+* COMPUTATION_FIELD
+* PROJECTION
+* PROJECTION_FIELD
+* OUTPUT
+* UDF
+* PROJECT_CALCULATION
+* CONSTANT
+* UNKNOWN
+
+Possible `scope` values:
+
+* MODEL
+* PROJECT
+* LIBRARY
+* DATA_SOURCE
+
+Generate stable IDs that include enough hierarchy to avoid naming collisions.
+
+Example concept:
+
+`INT.LIB.InterestRate.HullWhite.PROJ.revised_short_rate`
+
+Do not assume names are globally unique.
+
+---
+
+## Step 3 — Extract only DIRECT edges
+
+Create an Edge table with:
+
+`edge_id`
+`from_id`
+`relation`
+`to_id`
+`edge_category`
+`source_file`
+`source_expression`
+`resolution_method`
+`confidence`
+
+Suggested relationship vocabulary:
+
+### Structural
+
+* CONTAINS
+* HAS_INPUT
+* HAS_OUTPUT
+* HAS_CALCULATION
+* HAS_UDF
+* USES_LIBRARY
+
+### Data lineage
+
+* MAPS_TO
+* INPUT_TO
+* DERIVES
+* UPDATES
+* EXPOSES_AS
+* FEEDS
+
+### Execution
+
+* CALLS
+* CALLS_UDF
+* DEPENDS_ON
+
+### Control
+
+* SELECTS
+* ENABLES
+* BRANCHES_TO
+
+Do not create transitive relationships.
+
+For example, if:
+
+A → B
+B → C
+
+store only A→B and B→C.
+
+Do NOT create A→C during extraction.
+
+---
+
+## Step 4 — Resolve references
+
+Use this priority:
+
+1. HTML hyperlink / anchor target if available
+2. fully qualified expression reference
+3. local PathWise scope resolution
+4. unique-name lookup
+5. unresolved reference
+
+Do not silently guess when multiple candidates exist.
+
+For unresolved or ambiguous references:
+
+* create an unresolved-reference record
+* retain the original expression text
+* flag it for manual review
+
+Suggested `resolution_method` values:
+
+* HYPERLINK
+* FULLY_QUALIFIED
+* LOCAL_SCOPE
+* UNIQUE_NAME
+* UNRESOLVED
+
+---
+
+## Step 5 — Handle variable renaming / lineage
+
+PathWise variable names may change between:
+
+Data Source
+→ Library Input
+→ Computation
+→ Projection
+→ Output
+→ another Library Input
+
+Preserve these mappings as explicit direct edges rather than treating differently named variables as unrelated.
+
+Example concept:
+
+`DataSource.x`
+→ MAPS_TO →
+`Library.Input.y`
+
+`Projection.z`
+→ EXPOSES_AS →
+`Library.Output.forward_rate`
+
+Do not try to collapse all aliases into one variable yet. Preserve the original model objects and their direct mappings.
+
+---
+
+## Step 6 — Parse expressions
+
+For each Value or Expression field:
+
+* identify referenced PathWise variables/components
+* identify UDF calls
+* preserve the original expression
+* generate one direct edge for every resolved reference
+
+Be careful with:
+
+* array indexing
+* row groups
+* `prev(...)`
+* function calls
+* indexed lookups
+* conditional expressions
+* local variables
+* constants
+* similarly named variables in different libraries
+
+Do not treat numeric literals or language keywords as model nodes.
+
+---
+
+## Step 7 — Build the graph
+
+Use either `networkx` or a simple adjacency-list implementation.
+
+Implement functions such as:
+
+`get_direct_dependencies(node_id)`
+
+`get_direct_dependents(node_id)`
+
+`get_downstream_impact(node_id, max_depth=None)`
+
+`get_upstream_dependencies(node_id, max_depth=None)`
+
+For downstream traversal, use BFS so the result includes dependency distance:
+
+* hop 1
+* hop 2
+* hop 3
+* etc.
+
+Prevent infinite loops if the model contains cycles.
+
+Return the actual direct edges used to reach each node.
+
+---
+
+## Step 8 — Outputs
+
+Generate:
+
+### `nodes.csv`
+
+All parsed nodes.
+
+### `edges.csv`
+
+All direct resolved edges.
+
+### `unresolved_references.csv`
+
+References the parser cannot resolve safely.
+
+### `impact.csv`
+
+Generated only when the user specifies a starting node. Include:
+
+`start_node`
+`affected_node`
+`hop_distance`
+`predecessor`
+`relation`
+
+Also optionally save the graph as JSON.
+
+---
+
+## Step 9 — Validation report
+
+After parsing, print:
+
+* number of nodes
+* number of edges
+* edges by relationship type
+* nodes by native type
+* number of hyperlink-resolved references
+* number of text-resolved references
+* number of unresolved references
+* duplicate/ambiguous names
+* isolated nodes
+* cycles detected
+
+Show 10–20 sample edges for manual validation.
+
+---
+
+## Important design principles
+
+This is a static dependency graph, not an exact runtime execution graph.
+
+Do not claim that every reachable node is necessarily affected for every product or scenario because PathWise may contain conditional branches.
+
+Call traversal results:
+
+**Potential / Known Static Dependency Impact**
+
+rather than exact runtime impact.
+
+The parser should extract technical facts. It should NOT decide:
+
+* whether a component is reusable
+* whether two Internal and Reference model components are functionally equivalent
+* business meaning of a calculation
+* whether a change is appropriate
+
+Those semantic judgments will later be added by Quant/SME review.
+
+---
+
+## First implementation scope
+
+Do not try to parse the entire model immediately.
+
+First validate the approach on ONE model library, preferably InterestCredit or another selected library, including:
+
+* its Inputs
+* Calculations
+* Projection
+* Outputs
+* UDFs
+* direct upstream references
+* direct downstream references that can be resolved
+
+Once this works, generalize the parser.
+
+Please first inspect the actual exported HTML structure and tell me whether this approach is feasible. Then implement the smallest working version and explain any PathWise HTML structures that prevent reliable extraction.
