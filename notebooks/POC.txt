@@ -400,3 +400,462 @@ First validate the approach on ONE model library, preferably InterestCredit or a
 Once this works, generalize the parser.
 
 Please first inspect the actual exported HTML structure and tell me whether this approach is feasible. Then implement the smallest working version and explain any PathWise HTML structures that prevent reliable extraction.
+
+
+##8/27
+I already have a working Python parser that converts exported PathWise HTML documentation into:
+
+- nodes.csv
+- edges.csv
+- unresolved_references.csv
+- graph output
+
+The parser works well on the PathWise Reference model and currently produces 0 unresolved references there.
+
+However, on the Internal FIA model, it produces 7,000+ unresolved references.
+
+I identified one important root cause:
+
+Some Library Inputs directly reference Data Source fields without a `Lib.` or other library alias/prefix.
+
+For example, the expression may directly reference something like:
+
+`inforce.investment_account`
+
+or
+
+`market_data.xxx`
+
+or another Data Source field.
+
+These are valid PathWise Data Source references, but the current resolver sometimes fails to recognize them and incorrectly classifies them as:
+
+- UNKNOWN nodes
+- unresolved references
+
+I need you to improve the parser's reference-resolution logic comprehensively.
+
+## Important constraints
+
+Do NOT execute the parser.
+
+Do NOT rewrite unrelated parts of the parser.
+
+Do NOT redesign the node/edge output schema unless absolutely necessary.
+
+I need Python source code that I can manually merge into the existing parser.
+
+If you do not have enough context about the existing code, write the improved resolver as a self-contained replacement module with clear integration instructions.
+
+---
+
+## 1. First define the reference-resolution problem
+
+PathWise references may appear in several forms:
+
+### A. Hyperlink-resolved references
+The HTML may contain an `<a href>` or anchor pointing directly to the referenced object.
+
+These should have the highest priority.
+
+### B. Fully qualified Library references
+
+Examples may conceptually look like:
+
+`Lib.InterestRate.Output.forward_rate`
+
+or another fully qualified library/object path.
+
+### C. Relative references inside the current Library
+
+Examples:
+
+`Projection.factor`
+
+`Dictionary.some_parameter`
+
+`Computation.some_value`
+
+These should resolve relative to the current library and calculation block.
+
+### D. Direct Data Source references
+
+Examples:
+
+`inforce.investment_account`
+
+`market_data.some_curve`
+
+`product_info.product_code`
+
+These may appear without any `Lib.` prefix.
+
+They should resolve to existing DATA_SOURCE or DATA_SOURCE_FIELD nodes when the first namespace matches a known Data Source.
+
+### E. Project-level Calculation references
+
+Examples may refer to centralized project calculations such as:
+
+`RateSetting.xxx`
+
+`Cashflow.xxx`
+
+or other project-level calculations.
+
+These must be distinguishable from Libraries and Data Sources.
+
+### F. Project-level UDF references
+
+A function call may resolve to a project-level user-defined function.
+
+### G. Library-level UDF references
+
+A function may resolve only within the current library.
+
+### H. Local variables / current calculation block variables
+
+A symbol may refer to a locally defined variable within the same Dictionary, Computation, Projection, or calculation block.
+
+### I. Built-in PathWise / language functions
+
+Examples may include:
+
+`prev`
+
+`exp`
+
+`min`
+
+`max`
+
+or other built-in functions.
+
+These should NOT become UNKNOWN nodes or unresolved model references.
+
+### J. Array/index references
+
+Examples:
+
+`foo[idx]`
+
+`market_roll_forward[roll_forward_index[step]].swap_rate`
+
+The resolver should identify the meaningful model objects without treating every index expression or numeric literal as a model dependency.
+
+### K. Dynamic or ambiguous references
+
+If the reference cannot be safely resolved using static information, preserve it as unresolved.
+
+Do NOT guess.
+
+---
+
+## 2. Build explicit symbol indexes
+
+The resolver should not rely on global string matching alone.
+
+Build separate indexes for:
+
+- Data Source names
+- Data Source fields
+- Libraries
+- Library Inputs
+- Dictionary variables
+- Computation variables
+- Projection variables
+- Library Outputs
+- Project-level Calculations
+- Project-level UDFs
+- Library-level UDFs
+- Constants
+
+For example:
+
+`datasource_index`
+
+`library_index`
+
+`project_calculation_index`
+
+`project_udf_index`
+
+`library_udf_index`
+
+`local_scope_index`
+
+Also maintain a global name index only as a fallback.
+
+Do not merge objects from different scopes merely because they have the same short name.
+
+---
+
+## 3. Use a deterministic resolution priority
+
+Implement reference resolution using this order:
+
+1. HTML hyperlink / anchor target
+2. exact fully qualified node ID or fully qualified reference
+3. same calculation-block local scope
+4. same library scope
+5. known Data Source namespace
+6. project-level calculation
+7. project-level UDF
+8. library-level UDF
+9. constants
+10. unique global match
+11. ambiguous / unresolved
+
+This priority should be explicit in the code.
+
+---
+
+## 4. Fix direct Data Source resolution
+
+This is the immediate bug I need addressed.
+
+If the reference has the form:
+
+`namespace.field`
+
+and `namespace` matches a known PathWise Data Source, resolve it directly as:
+
+`DATA_SOURCE_FIELD`
+
+even if there is no Library prefix.
+
+For example:
+
+`inforce.investment_account`
+
+should resolve to the existing node representing that Data Source field.
+
+Do NOT create an UNKNOWN node if the Data Source and field already exist.
+
+Also handle deeper Data Source references if the HTML structure supports them.
+
+For example:
+
+`market_data.curves.usd.xxx`
+
+should preserve the correct hierarchy if that hierarchy exists in the parsed nodes.
+
+---
+
+## 5. Normalize references before resolution
+
+Create a normalization step that:
+
+- removes irrelevant whitespace
+- separates array indexing from the referenced object
+- identifies function-call syntax
+- preserves dotted namespaces
+- ignores numeric literals
+- ignores language keywords
+- ignores known built-in functions
+- handles `prev(variable)` by resolving the underlying variable rather than treating `prev` as a model node
+
+Do not over-normalize and lose scope information.
+
+---
+
+## 6. Do not create UNKNOWN nodes too early
+
+The current parser appears to create UNKNOWN nodes for some unresolved references.
+
+Change this behavior.
+
+Only create a graph node when there is evidence that it represents a real PathWise object.
+
+For unresolved references, store them in `unresolved_references.csv` instead of automatically adding UNKNOWN nodes to the canonical graph.
+
+If UNKNOWN nodes are still needed for compatibility, clearly separate:
+
+- real parsed PathWise nodes
+- synthetic unresolved placeholders
+
+Prefer not to include synthetic placeholders in the main dependency graph.
+
+---
+
+## 7. Improve unresolved-reference diagnostics
+
+For every unresolved reference, output:
+
+`raw_reference`
+
+`normalized_reference`
+
+`source_node_id`
+
+`source_scope`
+
+`source_library`
+
+`source_block_type`
+
+`source_expression`
+
+`unresolved_category`
+
+`candidate_matches`
+
+`resolution_attempts`
+
+`reason`
+
+Suggested unresolved categories:
+
+- AMBIGUOUS
+- DYNAMIC_LOOKUP
+- UNKNOWN_NAMESPACE
+- MISSING_NODE
+- UNSUPPORTED_SYNTAX
+- LOCAL_SCOPE_FAILURE
+- DATASOURCE_RESOLUTION_FAILURE
+- PROJECT_SCOPE_FAILURE
+- UDF_RESOLUTION_FAILURE
+- OTHER
+
+This will allow us to analyze root causes instead of manually reviewing thousands of records.
+
+---
+
+## 8. Return resolution metadata for every successful edge
+
+For every resolved dependency, include:
+
+`resolution_method`
+
+Possible values:
+
+- HYPERLINK
+- FULLY_QUALIFIED
+- LOCAL_BLOCK
+- LOCAL_LIBRARY
+- DATA_SOURCE
+- PROJECT_CALCULATION
+- PROJECT_UDF
+- LIBRARY_UDF
+- CONSTANT
+- UNIQUE_GLOBAL
+
+Also include:
+
+`confidence`
+
+Suggested rule:
+
+- HIGH: hyperlink or exact fully qualified reference
+- HIGH: exact Data Source namespace + field match
+- MEDIUM: deterministic local-scope resolution
+- LOW: unique global fallback
+
+Do not silently assign HIGH confidence to fallback matching.
+
+---
+
+## 9. Preserve edge direction
+
+The graph should represent data/dependency direction consistently.
+
+If variable A is referenced in the expression defining B:
+
+`B = f(A)`
+
+the dependency edge should be:
+
+`A -> B`
+
+not:
+
+`B -> A`
+
+For a Library Input:
+
+source variable -> library input
+
+For an Output mapping:
+
+internal calculation/projection variable -> library output
+
+For a UDF call:
+
+caller/calculation -> UDF may be stored as a CALLS_UDF execution edge, while data arguments should still generate their own dependency edges.
+
+---
+
+## 10. Avoid duplicate edges
+
+If the same direct dependency is found multiple times, store one canonical edge and optionally include:
+
+`occurrence_count`
+
+and/or
+
+`evidence_locations`
+
+Do not create thousands of duplicate edges for the same relationship.
+
+---
+
+## 11. Add diagnostic comparison tools
+
+Please also provide functions that can report:
+
+- unresolved references by source object type
+- unresolved references by namespace
+- unresolved references by root pattern
+- unresolved references by library
+- unresolved references by project calculation
+- resolution methods by count
+- top 50 unresolved patterns
+
+I need to compare the Reference model and Internal model to understand why one resolves fully and the other does not.
+
+---
+
+## 12. Validation before full-model rerun
+
+Do not assume the new resolver is correct simply because unresolved count decreases.
+
+Provide a validation workflow for a selected library, such as InterestCredit:
+
+1. manually specify 20 known relationships
+2. compare expected vs extracted edges
+3. report:
+   - correct edges
+   - missing edges
+   - incorrect edges
+   - unresolved expected relationships
+
+Precision is more important than forcing unresolved count to zero.
+
+Do not guess references merely to reduce the unresolved count.
+
+---
+
+## 13. Deliverable
+
+Please provide:
+
+1. A short explanation of the root cause and proposed resolver architecture
+2. A self-contained Python implementation of the improved reference-resolution module
+3. Any helper classes/functions required
+4. Exact instructions showing where the new resolver should be called from the existing parser
+5. Any minimal changes required to the existing node/edge extraction flow
+6. Example unit tests for:
+   - direct Data Source reference
+   - same-library relative reference
+   - project-level calculation
+   - project UDF
+   - library UDF
+   - built-in function
+   - array/index reference
+   - ambiguous reference
+7. A diagnostic function for unresolved-reference root-cause analysis
+
+Do NOT execute the code.
+
+Do NOT regenerate the entire parser unless absolutely necessary.
+
+The goal is to improve reference resolution while preserving the existing parser architecture and output format.
