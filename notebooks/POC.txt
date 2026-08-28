@@ -861,35 +861,35 @@ Do NOT regenerate the entire parser unless absolutely necessary.
 The goal is to improve reference resolution while preserving the existing parser architecture and output format.
 
 8/27 V2
-I want you to rewrite the PathWise HTML dependency parser from scratch as a cleaner V2 implementation.
+I want you to rewrite the PathWise HTML dependency parser as a clean V3 implementation.
 
-The current parser works well for the Reference model but creates 7,000+ unresolved references for the Internal FIA model. After reviewing the failures manually, the main problem is that the current resolver relies too much on global name matching and does not fully understand PathWise scope, namespaces, local variables, built-in functions, control flow, or variable aliasing.
+The current parser works well on the Reference model but still produces many unresolved references on the Internal FIA model. Manual review shows that the main issues are not isolated missing aliases. The parser needs a more accurate understanding of PathWise scope, namespaces, containers, composite inputs, local variables, built-in functions, control flow, and qualified references.
 
 Please use the actual exported PathWise HTML structure you already inspected.
 
 ## Goal
 
-Create a complete Python script that converts exported PathWise HTML documentation into:
+Create one complete Python script that converts exported PathWise HTML documentation into:
 
 - `nodes.csv`
 - `edges.csv`
 - `unresolved_references.csv`
 - `graph.json`
 
-The parser should extract only **direct, evidence-backed relationships**.
+Only extract **direct, evidence-backed relationships**.
 
-Do not create transitive dependency edges during parsing.
+Do not create transitive dependency paths during parsing.
 
 ---
 
-# 1. Clean expressions before parsing
+## 1. Clean expressions before parsing
 
-Preserve both:
+Preserve:
 
 - `raw_expression`
 - `clean_expression`
 
-Before extracting references, remove comments from `clean_expression`:
+Remove from `clean_expression` before extracting references:
 
 - block comments: `/* ... */`
 - line comments: `// ...`
@@ -898,15 +898,19 @@ Do not extract dependencies from comments.
 
 ---
 
-# 2. Build normalized PathWise nodes
+## 2. Parse the PathWise structural hierarchy first
 
-Parse model objects such as:
+Recognize and preserve:
 
+- Model
 - Data Sources
+- Data Sets / Assumption tables
 - Data Source fields
 - Library Groups
 - Libraries
 - Library Inputs
+- Composite Inputs
+- Composite Members
 - Dictionary variables
 - Computation variables
 - Projection variables
@@ -916,165 +920,235 @@ Parse model objects such as:
 - Library-level UDFs
 - Constants
 
-Keep the original HTML/native path for traceability.
+Keep two identifiers:
 
-Also create a shorter normalized `node_id`.
+### `native_path`
+The full original PathWise/HTML hierarchy for traceability.
+
+### `node_id`
+A shorter normalized ID for graph use.
 
 Example:
 
-Native path:
+Native:
 
 `MODEL.Test0.DATA_SOURCE.Data_Sources.DATA_SOURCE.market_data.DATA_SET.market_roll_forward`
 
-Normalized node ID:
+Normalized:
 
 `Test0.DS.market_data.market_roll_forward`
 
-For libraries:
+Example library field:
 
 `Test0.GRP.InterestRate.LIB.HullWhite.COMP.market_libor_spot`
 
-Keep `GROUP/GRP` because a PathWise Library Group and an individual Library are different structural levels.
+Keep `GRP` because Library Group and Library are different structural levels.
 
 ---
 
-# 3. Build explicit symbol indexes
+## 3. Build separate symbol indexes
 
-Create separate indexes for:
+Build explicit indexes for:
 
 - Data Source names
+- Data Sets / assumption tables
 - Data Source fields
 - Library Groups
 - Libraries
 - Library Inputs
+- Composite Inputs
+- Composite Members
 - Dictionary variables
 - Computation variables
 - Projection variables
 - Library Outputs
 - Project-level Calculations
+- Project-level calculation fields
 - Project-level UDFs
 - Library-level UDFs
 - Constants
 
 Do not rely mainly on one global short-name index.
 
-Objects with the same short name in different scopes must remain separate.
+Same short names in different scopes must remain separate.
 
 ---
 
-# 4. Parse expressions structurally
+## 4. Resolve containers before members
 
-Do not simply tokenize names and search globally.
+This is a key rule.
+
+For a dotted reference such as:
+
+`A.b`
+
+resolve `A` first.
+
+If `A` is already known to be a:
+
+- Data Source
+- Data Set
+- Library
+- Library Input
+- Composite Input
+- Dictionary
+- Computation
+- Projection
+- Project Calculation
+- structured object
+
+then resolve `b` only inside `A`'s child/member namespace.
+
+Do NOT take `b` and search the entire model first.
+
+Use:
+
+`container -> member`
+
+not:
+
+`member -> global search`
+
+Example:
+
+`time_step_logic_esg.roll_forward_index`
+
+If `time_step_logic_esg` is a project-level Computation, resolve:
+
+`roll_forward_index`
+
+inside that project calculation.
+
+It should not become `UNKNOWN` simply because the field itself has no standalone native-type label.
+
+Child nodes should inherit structural context from the resolved parent.
+
+---
+
+## 5. Handle composite inputs and composite members
+
+PathWise Library Inputs may be composite objects.
+
+Example:
+
+`params = g2pp[int(run.shock_index)]`
+
+where `params` contains members such as:
+
+- `a`
+- `sigma_t`
+- `rate_risk_premium`
+
+The parser should create:
+
+- a `COMPOSITE_INPUT` node for `params`
+- `COMPOSITE_MEMBER` nodes for:
+  - `params.a`
+  - `params.sigma_t`
+  - `params.rate_risk_premium`
+
+If the source composite `g2pp` contains corresponding fields, create direct mappings such as:
+
+`g2pp.a -> params.a`
+
+`g2pp.sigma_t -> params.sigma_t`
+
+`g2pp.rate_risk_premium -> params.rate_risk_premium`
+
+Use existing relations such as:
+
+- `CONTAINS`
+- `MAPS_TO`
+- `INPUT_TO`
+
+Do not classify `params.a` as unresolved simply because `a` is not globally unique.
+
+---
+
+## 6. Dynamic indexing does not imply dynamic target
+
+Example:
+
+`g2pp[int(run.shock_index)]`
+
+The selected row/record is dynamic, but the referenced object `g2pp` is known.
+
+Similarly:
+
+`withdrawal_rate_annual[0, anni_idx]`
+
+still has a known target:
+
+`withdrawal_rate_annual`
+
+Only use `TRUE_DYNAMIC_LOOKUP` when the actual target model object itself is selected dynamically and cannot be known statically.
+
+For index selectors such as:
+
+`run.shock_index`
+
+preserve them as a control dependency or selector metadata if useful.
+
+Example:
+
+`run.shock_index -> SELECTS -> params`
+
+---
+
+## 7. Parse expressions structurally
+
+Do not simply split tokens and search globally.
 
 Recognize:
 
-- fully qualified references
+- qualified references
 - relative references
 - local variables
+- assignments
 - function calls
 - array/index access
 - attribute access
+- built-in functions
+- UDF calls
 - control-flow syntax
 - literals
-- built-in functions
-- UDFs
+- structured/composite member access
 
-Separate function resolution from argument resolution.
+Function resolution and argument resolution must be separate.
 
-If a function itself cannot be resolved, its arguments should still be parsed for dependencies.
-
----
-
-# 5. Use scope-aware reference resolution
-
-Use this priority:
-
-1. explicit/direct reference from HTML metadata
-2. exact fully qualified path
-3. current calculation-block local scope
-4. current Library scope
-5. current Library Inputs / Outputs / UDFs
-6. project-level Calculations / UDFs
-7. top-level Data Sources
-8. other Library Outputs only, if PathWise allows that interface
-9. unresolved
-
-Do NOT search arbitrary fields inside unrelated Libraries.
-
-Do NOT use global short-name matching as the normal resolution method.
-
-If global matching is retained at all, it must be an optional low-confidence fallback and must never create an edge automatically when multiple candidates exist.
+If a function is built-in or unknown, still parse its arguments for dependencies.
 
 ---
 
-# 6. Resolve qualified Data Source references correctly
+## 8. Built-in function registry
 
-References such as:
+Use the following list as PathWise/system built-ins.
 
-`market_shocks.libor_spot_proxy`
+### BUILT-IN FUNCTIONS — I WILL PASTE THE LIST HERE
 
-`market_base.libor_spot_proxy`
+```text
+[PASTE BUILT-IN FUNCTION NAMES HERE]
+```
 
-`market_roll_forward[...].libor_spot_proxy`
+Built-ins should:
 
-must preserve their namespace.
-
-Do not reduce all of them to:
-
-`libor_spot_proxy`
-
-Resolve the longest qualified path first.
-
-For example:
-
-`market_shocks.libor_spot_proxy`
-
-should resolve specifically to the `market_shocks` Data Source/Data Set field.
-
-It should not become AMBIGUOUS merely because another Data Source also contains a field named `libor_spot_proxy`.
-
----
-
-# 7. Built-in functions are not graph nodes
-
-Maintain a configurable registry of PathWise/system built-ins.
-
-Examples may include:
-
-- `last`
-- `prev`
-- `exp`
-- `sqrt`
-- `min`
-- `max`
-- `ceil`
-- `iif`
-- `sum_range`
-- `intg_exp`
-- date/calendar functions
-- RNG/system functions
-
-Built-in functions should:
-
-- not become nodes
-- not become unresolved UDFs
+- not become graph nodes
+- not be classified as unresolved UDFs
 - not block parsing of their arguments
 
 Example:
 
 `last(cashflow.interest_credit_percentage_first)`
 
-should generate a dependency from:
+should still create a dependency on:
 
 `cashflow.interest_credit_percentage_first`
-
-to the target variable.
 
 Optionally record:
 
 `reference_modifier = LAST`
 
-Similarly:
+Likewise:
 
 `prev(x)`
 
@@ -1082,109 +1156,122 @@ should preserve the dependency on `x`.
 
 ---
 
-# 8. Handle local temporary variables
+## 9. Scope-aware reference resolution
 
-Expressions may define local temporary variables inside one calculation block.
+Use this order:
+
+1. `DIRECT_REFERENCE` from explicit machine-resolvable documentation metadata
+2. exact fully qualified path
+3. current local calculation-block symbol
+4. current container/member namespace
+5. current Library scope
+6. current Library Inputs / Outputs / UDFs
+7. project-level Calculations / UDFs
+8. top-level Data Sources
+9. other Library Outputs only, if PathWise permits cross-library access through exposed outputs
+10. unresolved
+
+Do NOT search internal fields of unrelated Libraries.
+
+Do NOT automatically connect a short name to another Library's Computation/Projection field.
+
+If a global short-name fallback is retained, it must be optional, low-confidence, and must not generate an edge when multiple candidates exist.
+
+---
+
+## 10. Resolve qualified Data Source references using the longest path
+
+Examples:
+
+`market_shocks.libor_spot_proxy`
+
+`market_base.libor_spot_proxy`
+
+`market_roll_forward[roll_forward_index[step]].libor_spot_proxy`
+
+Do not reduce them to only:
+
+`libor_spot_proxy`
+
+Resolve the longest known qualified path first.
+
+The first two should map to different Data Source/Data Set fields even though their final field name is the same.
+
+They are not ambiguous merely because another namespace contains the same short field name.
+
+---
+
+## 11. Handle local temporary variables
+
+A calculation block may define local temporary variables.
 
 Example:
 
 `anni_idx = ceil(years_since_issue + 1e-6)`
 
-then later:
+followed by:
 
 `withdrawal_rate_annual[0, anni_idx]`
 
-The parser should maintain a local symbol table for the current expression/calculation block.
+Maintain a local symbol table within the current calculation/expression block.
 
-Do not search the whole model for `anni_idx`.
+Do not search the full model for `anni_idx`.
 
-For the POC, local temporary variables may be collapsed so the final graph connects the real upstream dependencies directly to the final PathWise calculation node.
+For the POC, local temporary variables may be collapsed from the final canonical graph.
 
-Example:
-
-`years_since_issue`
-→ final calculation
-
-and
-
-`withdrawal_rate_annual`
-→ final calculation
-
-Local temporary variables do not need to become permanent global graph nodes unless useful for debugging.
+The final target calculation should still retain dependencies on the true upstream PathWise variables.
 
 ---
 
-# 9. Dynamic index is not necessarily dynamic target
+## 12. Parse control flow
 
-Do not classify every indexed expression as `DYNAMIC_LOOKUP`.
+Recognize:
 
-Example:
-
-`withdrawal_rate_annual[0, anni_idx]`
-
-has a known target:
-
-`withdrawal_rate_annual`
-
-Only the index is dynamic.
-
-The parser should still resolve the dependency on `withdrawal_rate_annual`.
-
-Use `TRUE_DYNAMIC_LOOKUP` only when the actual target model object is determined dynamically at runtime, such as string-driven/object-driven lookup where the static target cannot be known safely.
-
----
-
-# 10. Parse switch/case and control flow
-
-Recognize PathWise control-flow syntax such as:
-
-- `if / elseif / else`
-- `switch / case`
+- `if`
+- `elseif`
+- `else`
+- `endif`
+- `switch`
+- `case`
 - `return`
 
-These keywords are not model nodes.
+These are syntax, not model nodes.
 
 Example:
 
 `switch inforce.investment_account`
 
-should create a control dependency from:
+should create a control relationship from:
 
 `inforce.investment_account`
 
 to the target calculation.
 
-Variables referenced inside each `case` should also generate normal data dependencies.
+Variables referenced inside each branch should generate normal data dependencies.
 
-Do not classify `switch`, `case`, or branch keywords as `MISSING_NODE`.
-
-Optional edge metadata may include branch/condition information, but this is not required for the POC.
+Do not classify `switch` or `case` as `MISSING_PARSED_NODE`.
 
 ---
 
-# 11. Handle structured attribute access
+## 13. Handle structured attribute access
 
-References such as:
+Examples:
 
 `run.eop_date.year`
 
 `run.eop_date.month`
 
-may represent a structured object with attribute access.
+Resolve the meaningful structured object first.
 
-Resolve the meaningful base model object first, for example:
+If `run.eop_date` is a known object, preserve `.year`, `.month`, etc. as attribute access metadata if appropriate.
 
-`run.eop_date`
-
-and preserve `.year` / `.month` as attribute metadata if needed.
-
-Do not automatically treat every dotted suffix as a separate namespace.
+Do not automatically interpret every dotted suffix as a separate global namespace.
 
 ---
 
-# 12. Direct edges only
+## 14. Direct dependency direction
 
-If B is defined using A:
+If:
 
 `B = f(A)`
 
@@ -1198,24 +1285,19 @@ For Library Inputs:
 
 For Output mappings:
 
-`internal variable -> Library Output`
+`internal calculation/projection variable -> Library Output`
 
 For UDF calls:
 
-create a `CALLS_UDF` execution edge if useful.
+create `CALLS_UDF` if useful, but also separately parse all argument dependencies.
 
-Also separately extract dependencies from UDF arguments.
-
-Do not create transitive edges such as A→C when the actual direct structure is:
-
-A→B  
-B→C
+Do not generate transitive edges.
 
 ---
 
-# 13. Recommended relation types
+## 15. Relation vocabulary
 
-Use a controlled vocabulary.
+Use a controlled set.
 
 Structural:
 
@@ -1248,23 +1330,23 @@ Control:
 - `ENABLES`
 - `BRANCHES_TO`
 
-Do not invent new relation names unless necessary.
+Do not create new relationship names unless required.
 
 ---
 
-# 14. Avoid synthetic UNKNOWN nodes
+## 16. Do not create UNKNOWN nodes too early
 
-Do not automatically create UNKNOWN graph nodes for unresolved tokens.
+Only create canonical graph nodes when there is evidence from the PathWise documentation that the object exists.
 
-Only create canonical graph nodes when the HTML/model documentation provides evidence that the object exists.
+Do not automatically create UNKNOWN nodes from unresolved tokens.
 
-Unresolved references should go to `unresolved_references.csv`.
+Keep unresolved items in `unresolved_references.csv`.
 
 ---
 
-# 15. Improve unresolved classifications
+## 17. Unresolved categories
 
-Use these categories:
+Use:
 
 - `AMBIGUOUS_SCOPE`
 - `TRUE_DYNAMIC_LOOKUP`
@@ -1278,9 +1360,10 @@ Use these categories:
 - `BUILTIN_NOT_REGISTERED`
 - `CONTROL_FLOW_NOT_PARSED`
 - `ATTRIBUTE_ACCESS_FAILURE`
+- `COMPOSITE_MEMBER_FAILURE`
 - `OTHER`
 
-For every unresolved reference include:
+For each unresolved reference output:
 
 - raw reference
 - normalized reference
@@ -1289,16 +1372,16 @@ For every unresolved reference include:
 - source block type
 - raw expression
 - clean expression
-- category
+- unresolved category
 - candidate IDs
 - resolution attempts
 - detailed reason
 
 ---
 
-# 16. Resolution metadata
+## 18. Resolution metadata
 
-For successful edges include:
+For resolved edges include:
 
 - `resolution_method`
 - `confidence`
@@ -1307,82 +1390,82 @@ For successful edges include:
 - `raw_expression`
 - `clean_expression`
 
-Suggested resolution methods:
+Suggested methods:
 
 - `DIRECT_REFERENCE`
 - `FULLY_QUALIFIED`
 - `LOCAL_BLOCK`
+- `PARENT_MEMBER`
 - `LOCAL_LIBRARY`
+- `COMPOSITE_MEMBER`
 - `DATA_SOURCE`
 - `PROJECT_CALCULATION`
 - `PROJECT_UDF`
 - `LIBRARY_UDF`
 - `CONSTANT`
 
-Avoid calling the method `HYPERLINK`; use `DIRECT_REFERENCE` for explicit machine-resolvable references contained in the documentation.
-
 ---
 
-# 17. Deduplicate edges
+## 19. Deduplicate edges
 
-The same dependency may appear multiple times.
+Store one canonical direct edge.
 
-Store one canonical direct edge and optionally include:
+Optionally include:
 
 - `occurrence_count`
-- evidence locations
+- `evidence_locations`
 
-Do not create many duplicate graph edges.
+Do not create repeated identical graph edges.
 
 ---
 
-# 18. Diagnostics
+## 20. Diagnostics
 
-After parsing, print:
+Print:
 
 - total nodes
-- total direct edges
+- total edges
 - unresolved count
 - unresolved count by category
 - unresolved count by Library
 - unresolved count by namespace
-- edge count by relation type
 - resolution count by method
+- edge count by relation
 - top unresolved patterns
-- ambiguous candidate patterns
-
-This is important for comparing the Reference model and Internal FIA model.
+- top ambiguous patterns
+- composite-member failures
+- parent/member resolution failures
 
 ---
 
-# 19. Validation
+## 21. Validation
 
-Do not optimize for unresolved count alone.
+Precision is more important than forcing unresolved count to zero.
 
-Precision is more important than forcing everything to resolve.
-
-The parser should prefer:
+Prefer:
 
 `unresolved`
 
-over creating a wrong dependency.
+over a wrong edge.
 
-Provide a simple validation helper where I can define manually verified edges for a Library such as InterestCredit and compare:
+Provide a validation helper where I can define manually verified edges and report:
 
-- expected edges
-- correctly extracted edges
-- missing edges
-- incorrect edges
+- correct
+- missing
+- incorrect
+- unresolved expected relationships
 
 ---
 
-# 20. Code requirements
+## 22. Code requirements
 
 Write one complete replacement Python implementation.
 
-The code should be modular and readable.
+Do not execute it.
 
-Add very short comments before each major step only, for example:
+Keep the code modular.
+
+Use only very short comments before major steps, such as:
 
 ```python
 # Remove comments before parsing expressions.
@@ -1393,25 +1476,25 @@ Add very short comments before each major step only, for example:
 ```
 
 ```python
-# Resolve qualified references before local names.
+# Resolve the parent before resolving members.
 ```
 
 ```python
-# Parse built-in calls but keep argument dependencies.
+# Expand composite input members.
 ```
 
-Do NOT add long explanatory comments throughout the code.
+```python
+# Parse built-ins but keep argument dependencies.
+```
 
-Prefer small functions with clear names instead.
+Do not add long explanatory comments.
 
-Do not execute the code.
+At the end provide only:
 
-At the end provide:
-
-1. required Python packages
-2. example command to run the parser
-3. short explanation of the main modules/functions
+1. required packages
+2. example command
+3. short module/function overview
 4. known limitations
-5. where the built-in function registry can be extended
+5. the exact place where I can extend the built-in function registry
 
-The goal of V2 is not to force the Internal FIA model to zero unresolved references. The goal is to correctly resolve all statically resolvable PathWise relationships while clearly classifying genuinely ambiguous, dynamic, or unsupported references.
+The goal is to correctly resolve all statically resolvable PathWise relationships while leaving genuinely ambiguous or dynamic references unresolved.
