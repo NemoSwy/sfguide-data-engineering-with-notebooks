@@ -1,0 +1,548 @@
+Use the previous V3 parser specification as the baseline. Preserve all existing V3 rules for scope-aware resolution, composite inputs, built-ins, local variables, control flow, comments, parent/member resolution, and direct-edge extraction.
+
+Add the following Data Source and NPZ schema support.
+
+## 1. Add NPZ/Data Source schema as a second source of truth
+
+The parser should accept:
+
+- exported PathWise HTML documentation
+- one or more corresponding NPZ Data Source files
+
+HTML should remain the main source for model calculations and relationships.
+
+NPZ should primarily provide **Data Source schema information**, including:
+
+- Data Source / dataset names
+- field names
+- data types
+- shapes
+- structured/composite members
+
+Do not use individual Data Source values as graph nodes.
+
+The goal is schema extraction, not data-value extraction.
+
+---
+
+## 2. Represent the Data Source hierarchy explicitly
+
+The PathWise Data Source structure may look like:
+
+```text
+Data Source
+  market_data
+    g2pp
+      a
+      sigma_t
+      rate_risk_premium
+      correlation
+
+    hybrid_index
+      index_name
+      algorithm_type
+      equity_betas
+      bond_betas
+      equity_sigma
+      bond_sigma
+      ...
+```
+
+Represent these as separate node levels:
+
+- `DATA_SOURCE`
+- `DATA_SET`
+- `DATA_FIELD`
+
+Example normalized IDs:
+
+```text
+Test0.DS.market_data
+Test0.DS.market_data.g2pp
+Test0.DS.market_data.g2pp.a
+Test0.DS.market_data.g2pp.sigma_t
+
+Test0.DS.market_data.hybrid_index
+Test0.DS.market_data.hybrid_index.index_name
+Test0.DS.market_data.hybrid_index.equity_betas
+```
+
+Create structural edges such as:
+
+```text
+market_data
+    CONTAINS
+g2pp
+
+g2pp
+    CONTAINS
+g2pp.a
+```
+
+Do not create one node for every array row or element.
+
+For example, `sigma_t real[12,2]` should remain one field node with:
+
+```text
+type = real
+shape = [12,2]
+```
+
+---
+
+## 3. Parse structured/composite NPZ schemas recursively
+
+Inspect the NPZ structure and identify:
+
+- ordinary NumPy arrays
+- structured arrays
+- record arrays
+- nested/composite dtypes
+- object-like containers where safely inspectable
+
+If a dataset has named fields, create one `DATA_FIELD` node per field.
+
+For example, if `g2pp` contains:
+
+```text
+a
+sigma_t
+rate_risk_premium
+correlation
+```
+
+register all four fields in the Data Source symbol index.
+
+Do not flatten array indices into separate graph nodes.
+
+---
+
+## 4. Merge HTML and NPZ Data Source definitions
+
+HTML and NPZ may describe the same Data Source object.
+
+Do not create duplicates.
+
+Use a canonical identity based on:
+
+```text
+Data Source
++ Data Set
++ Field
+```
+
+For each Data Source node retain provenance:
+
+```text
+source_provenance = HTML
+source_provenance = NPZ_SCHEMA
+source_provenance = BOTH
+```
+
+If HTML and NPZ disagree on:
+
+- field name
+- type
+- shape
+- hierarchy
+
+do not silently overwrite one source.
+
+Write the discrepancy to a diagnostic output.
+
+---
+
+## 5. Build a dedicated Data Source registry
+
+Create indexes such as:
+
+```python
+datasource_index
+dataset_index
+datafield_index
+```
+
+The registry must understand both:
+
+```text
+market_data.market_shocks.libor_spot_proxy
+```
+
+and shortened PathWise references such as:
+
+```text
+market_shocks.libor_spot_proxy
+```
+
+when `market_shocks` is a uniquely known Data Set under the model's Data Sources.
+
+The resolver should prefer a known Data Source/Data Set namespace before searching unrelated Libraries.
+
+---
+
+## 6. Resolve Data Set prefixes before short field names
+
+For:
+
+```text
+market_shocks.libor_spot_proxy
+market_base.libor_spot_proxy
+```
+
+first resolve:
+
+```text
+market_shocks
+market_base
+```
+
+as Data Sets.
+
+Then resolve:
+
+```text
+libor_spot_proxy
+```
+
+inside the corresponding Data Set.
+
+Do NOT search all model fields named `libor_spot_proxy`.
+
+These are not ambiguous simply because multiple datasets contain a field with the same short name.
+
+Use:
+
+```text
+container -> member
+```
+
+resolution.
+
+---
+
+## 7. Data Sources may be referenced directly without a Library alias
+
+A Library Input may directly reference:
+
+```text
+market_shocks
+market_base
+market_roll_forward
+g2pp
+hybrid_index
+inforce
+product_info
+```
+
+or their fields without a `Lib.` prefix.
+
+If the leading namespace matches a known Data Source or Data Set from HTML/NPZ, resolve it as a Data Source reference before considering Library candidates.
+
+Do not create UNKNOWN nodes for these references.
+
+---
+
+## 8. Expand composite Library Inputs using Data Source schema
+
+Example:
+
+```text
+params = g2pp[int(run.shock_index)]
+```
+
+and `params` is a composite Library Input containing:
+
+```text
+a
+sigma_t
+rate_risk_premium
+```
+
+If the NPZ/Data Source schema confirms that `g2pp` contains the same fields, create:
+
+```text
+g2pp.a
+    MAPS_TO
+params.a
+
+g2pp.sigma_t
+    MAPS_TO
+params.sigma_t
+
+g2pp.rate_risk_premium
+    MAPS_TO
+params.rate_risk_premium
+```
+
+Then expressions such as:
+
+```text
+params.a
+```
+
+should resolve through the local composite input rather than becoming unresolved.
+
+---
+
+## 9. Dynamic row selection is not a dynamic object lookup
+
+For:
+
+```text
+g2pp[int(run.shock_index)]
+```
+
+the selected record is dynamic, but the referenced Data Set is statically known.
+
+Therefore:
+
+```text
+g2pp
+```
+
+is a resolved Data Source dependency.
+
+Its members such as:
+
+```text
+g2pp.a
+g2pp.sigma_t
+```
+
+are also statically resolvable.
+
+Optionally record:
+
+```text
+run.shock_index
+    SELECTS
+params
+```
+
+or store the selector as edge metadata.
+
+Do NOT classify this as `TRUE_DYNAMIC_LOOKUP`.
+
+---
+
+## 10. Handle indexed Data Source datasets similarly
+
+Example:
+
+```text
+market_roll_forward[roll_forward_index[step]].libor_spot_proxy
+```
+
+The static target is:
+
+```text
+market_roll_forward.libor_spot_proxy
+```
+
+The index determines which record is used.
+
+Extract dependencies on:
+
+```text
+market_roll_forward.libor_spot_proxy
+roll_forward_index
+```
+
+Do not create a separate node for every indexed record.
+
+---
+
+## 11. Improve Data Source resolution priority
+
+Within the V3 resolution sequence, use:
+
+```text
+1. DIRECT_REFERENCE
+2. fully qualified model reference
+3. current local block
+4. current parent/container member
+5. current Library
+6. current Library Input / Output / UDF
+7. project-level Calculation / UDF
+8. known Data Source or Data Set namespace
+9. Data Source member resolution using NPZ schema
+10. other Library OUTPUT only when explicitly allowed
+11. unresolved
+```
+
+Never use an unrelated Library's internal field merely because the short name matches.
+
+---
+
+## 12. Add Data Source-specific resolution methods
+
+Add:
+
+```text
+DATA_SOURCE
+DATA_SET
+DATA_FIELD
+NPZ_SCHEMA
+COMPOSITE_DATASOURCE_MEMBER
+```
+
+as appropriate resolution methods.
+
+For example:
+
+```text
+market_shocks.libor_spot_proxy
+```
+
+may use:
+
+```text
+resolution_method = DATA_FIELD
+confidence = HIGH
+```
+
+when the Data Set and field are explicitly confirmed by NPZ/HTML.
+
+---
+
+## 13. Add Data Source-specific unresolved diagnostics
+
+Add or retain categories such as:
+
+```text
+DATASOURCE_RESOLUTION_FAILURE
+DATASET_RESOLUTION_FAILURE
+DATAFIELD_RESOLUTION_FAILURE
+COMPOSITE_MEMBER_FAILURE
+SCHEMA_MISMATCH
+```
+
+For each failure include:
+
+- raw reference
+- normalized reference
+- attempted Data Source
+- attempted Data Set
+- attempted field
+- NPZ candidates
+- HTML candidates
+- source expression
+- detailed reason
+
+---
+
+## 14. Add reconciliation diagnostics
+
+After parsing print:
+
+```text
+Data Sources found in HTML
+Data Sources found in NPZ
+
+Data Sets found in HTML
+Data Sets found in NPZ
+
+Data Fields found in HTML
+Data Fields found in NPZ
+
+Nodes added from NPZ schema
+References resolved using NPZ schema
+Composite members resolved using NPZ schema
+
+HTML/NPZ schema mismatches
+Remaining Data Source unresolved references
+```
+
+This should allow us to measure whether adding NPZ schema materially improves the Internal FIA dependency graph.
+
+---
+
+## 15. Important scope rule
+
+When resolving a reference inside a Library, candidate search should normally be restricted to:
+
+```text
+current block
+current Library
+current Library interfaces
+project-level objects
+top-level Data Sources / Data Sets
+explicitly exposed Outputs from another Library
+```
+
+Do NOT search internal fields of every other Library.
+
+This is especially important for common short names such as:
+
+```text
+rate
+time
+spot
+value
+index
+```
+
+---
+
+## 16. NPZ safety and performance
+
+Do not expand every Data Source row or array element.
+
+Only extract schema-level information:
+
+- container
+- fields
+- dtype
+- shape
+
+If object arrays require special handling, isolate that logic clearly.
+
+Avoid enabling unsafe pickle loading unless it is actually required by the trusted internal NPZ format.
+
+---
+
+## 17. Built-in registry
+
+Keep the existing V3 built-in registry section exactly as a configurable section:
+
+```text
+### BUILT-IN FUNCTIONS
+
+[PASTE BUILT-IN FUNCTION NAMES HERE]
+```
+
+Built-ins should never prevent their argument dependencies from being extracted.
+
+---
+
+## Code deliverable
+
+Rewrite the complete V3 parser with this Data Source/NPZ extension integrated into the architecture.
+
+Do not provide a small patch only.
+
+Keep comments very short, only before major steps, for example:
+
+```python
+# Read Data Source schema from NPZ.
+```
+
+```python
+# Merge HTML and NPZ nodes.
+```
+
+```python
+# Resolve the container before its field.
+```
+
+```python
+# Expand composite Data Source members.
+```
+
+```python
+# Resolve indexed datasets without expanding rows.
+```
+
+Do not execute the code.
+
+The objective is to use the NPZ schema to improve node recognition and reference resolution, especially for direct Data Source references, nested Data Set fields, and composite Library Inputs, without reducing graph precision.
