@@ -1,0 +1,435 @@
+You are acting as a senior quantitative model architect for a PathWise insurance valuation model.
+
+Your task is to classify model components using the existing PathWise model knowledge, including:
+
+- nodes.csv
+- edges.csv
+- model documentation
+- component names and hierarchy
+- Inputs / Dictionary / Computation / Projection / Outputs
+- Data Source lineage
+- upstream/downstream dependencies
+- UDF usage
+- existing reviewed architecture labels, if available
+
+Do NOT classify a component based only on its name.
+
+Use implementation structure, inputs, outputs, formulas, dependencies, and documented business purpose.
+
+The objective is to support model factorization, reusable architecture design, and future model-change analysis.
+
+For each model component, assign the following four architecture classifications.
+
+--------------------------------------------------
+LEVEL 1 — BUSINESS CAPABILITY
+--------------------------------------------------
+
+Identify WHAT business, actuarial, financial, or model function the component performs.
+
+Use the following controlled hierarchy.
+
+DOMAIN: Product & Configuration
+- Product Identification & Classification
+- Product Configuration Selection
+- Assumption Selection & Mapping
+
+DOMAIN: Time & Projection Control
+- Projection Timeline Management
+- Event Timing & Eligibility
+- Roll-Forward / State Timing
+
+DOMAIN: Economic Scenario Generation
+- Interest Rate Scenario Generation
+- Interest Rate Curve Transformation
+- Equity / Index Market Scenario
+- Random Variable Generation
+- Market Shock Selection & Application
+
+DOMAIN: Investment / Index Modeling
+- Index Strategy Representation
+- Hybrid Index Construction
+- Option / Derivative Pricing
+- Pricing Method Selection
+
+DOMAIN: Rate Setting
+- Option Budget Determination
+- Crediting Parameter Setting
+- Strategy / Rate Selection
+- Renewal / Reset Processing
+
+DOMAIN: Account Crediting
+- Crediting Event Determination
+- Crediting Method Selection
+- Strategy Return Calculation
+- Account Credit Calculation
+- Product-Specific Credit Adjustment
+- Account Credit Application
+
+DOMAIN: Account & Policy State
+- Account Value Roll-Forward
+- Account Balance Management
+- Policy State Evolution
+
+DOMAIN: Policyholder Behavior / Decrements
+- Mortality
+- Lapse / Surrender
+- Dynamic Lapse Behavior
+- Partial Withdrawal Behavior
+- Full Withdrawal / Surrender Event
+- Annuitization Behavior
+
+DOMAIN: Benefits & Charges
+- Policy Fee Calculation
+- Rider Charge Calculation
+- Surrender Charge / MVA
+- Death Benefit
+- Living Benefit
+- Surrender Benefit
+- Annuitization Benefit
+- Rider Benefit Base Evolution
+
+DOMAIN: Asset / General Account
+- Bond Portfolio Management
+- Duration / Convexity Management
+- General Account Yield
+- Asset-Liability Interaction
+
+DOMAIN: Cash Flow & Valuation
+- Premium / Deposit Cash Flow
+- Withdrawal Cash Flow
+- Benefit Cash Flow
+- Fee Cash Flow
+- Account / Investment Cash Flow
+- Net Policy Cash Flow
+- Risk-Neutral Valuation
+- Real-World Projection
+- Discounting
+- Present Value Aggregation
+- Terminal Value / Provision
+
+DOMAIN: Risk / Results / Model Infrastructure
+- Market Greeks
+- Interest Rate Sensitivity
+- Equity / Volatility Sensitivity
+- Result Aggregation
+- Model Output Preparation
+- Data Input Management
+- Variable / Interface Mapping
+- Calculation Orchestration
+- Utility Functions
+
+If none clearly applies, classify as:
+UNCLASSIFIED
+
+Do not create a new capability unless there is strong evidence that the taxonomy is missing a materially different model function.
+
+For components that serve several purposes, assign:
+- Primary Capability
+- optional Secondary Capability
+
+The Primary Capability should represent what the component itself primarily does, not every downstream use of its output.
+
+Example:
+A Two-Factor Hull-White library should normally be classified as:
+
+Primary Domain:
+Economic Scenario Generation
+
+Primary Capability:
+Interest Rate Scenario Generation
+
+It may have a Secondary Usage such as:
+Risk-Neutral Valuation Support
+
+Do NOT classify it primarily as Valuation merely because its rates are later used for discounting.
+
+--------------------------------------------------
+LEVEL 2 — ARCHITECTURAL ROLE
+--------------------------------------------------
+
+Select ONE primary architectural role:
+
+SOURCE
+CONFIGURATION
+SELECTOR_ROUTER
+TRANSFORMATION
+STATE_EVOLUTION
+PRICING_VALUATION
+EVENT_GENERATOR
+AGGREGATOR
+INTERFACE
+ORCHESTRATOR
+UTILITY
+
+Definitions:
+
+SOURCE:
+Provides raw or externally supplied model information.
+
+CONFIGURATION:
+Defines parameters, assumptions, product setup, or configurable behavior.
+
+SELECTOR_ROUTER:
+Chooses among calculation paths, methodologies, products, strategies, or assumptions.
+
+TRANSFORMATION:
+Transforms inputs into derived model quantities without primarily maintaining recursive state.
+
+STATE_EVOLUTION:
+Maintains or updates model state through projection time or paths.
+
+PRICING_VALUATION:
+Directly calculates economic value, price, PV, or valuation quantity.
+
+EVENT_GENERATOR:
+Determines or produces policyholder or contract events such as lapse, withdrawal, death, or renewal.
+
+AGGREGATOR:
+Combines multiple model outputs, cash flows, paths, policies, or results.
+
+INTERFACE:
+Primarily exposes or maps information between model components.
+
+ORCHESTRATOR:
+Coordinates multiple model components or centralized project-level calculations.
+
+UTILITY:
+Provides reusable technical functionality without owning a primary business capability.
+
+Optional:
+Assign one Secondary Architectural Role if strongly supported.
+
+--------------------------------------------------
+LEVEL 3 — REUSE / EXTENSION ROLE
+--------------------------------------------------
+
+Classify the component from a future model architecture perspective.
+
+Choose ONE:
+
+COMMON_CORE
+CONFIGURABLE_COMMON
+COMMON_CORE_WITH_EXTENSION
+PRODUCT_SPECIFIC
+MODEL_SPECIFIC
+UTILITY
+UNCLEAR
+
+Definitions:
+
+COMMON_CORE:
+Stable logic that should generally be reusable across products/models with little or no product-specific modification.
+
+CONFIGURABLE_COMMON:
+Reusable common logic where product differences should primarily be handled through parameters, assumptions, or configuration.
+
+COMMON_CORE_WITH_EXTENSION:
+A reusable core exists, but product-specific extension points or specialized branches are expected.
+
+PRODUCT_SPECIFIC:
+The component represents an intentionally product-specific rule or behavior.
+
+MODEL_SPECIFIC:
+The component reflects the implementation or legacy architecture of this particular model and should not automatically be treated as reusable business logic.
+
+UTILITY:
+Reusable technical helper functionality.
+
+UNCLEAR:
+Current evidence is insufficient to make a reliable factorization decision.
+
+Important:
+Do NOT label something COMMON_CORE simply because it is used by many downstream nodes.
+
+Reuse classification requires evidence about:
+- methodology stability
+- parameterization
+- product dependence
+- business rule dependence
+- interface stability
+
+--------------------------------------------------
+LEVEL 4 — INTERFACE / DEPENDENCY ROLE
+--------------------------------------------------
+
+Select all applicable roles:
+
+EXTERNAL_INPUT
+MODEL_PARAMETER
+ASSUMPTION
+MARKET_INPUT
+CONTROL_INPUT
+LIBRARY_INPUT
+INTERNAL_STATE
+INTERMEDIATE
+EXPOSED_OUTPUT
+POLICY_STATE
+RESULT
+
+Definitions:
+
+EXTERNAL_INPUT:
+Originates outside the model calculation logic.
+
+MODEL_PARAMETER:
+Model or methodology parameter controlling calculation behavior.
+
+ASSUMPTION:
+Actuarial/product/business assumption.
+
+MARKET_INPUT:
+Market or economic input such as rate, equity, volatility, or curve information.
+
+CONTROL_INPUT:
+Controls routing, eligibility, branching, or method selection.
+
+LIBRARY_INPUT:
+Formal input interface of a PathWise Library.
+
+INTERNAL_STATE:
+Persistent or recursively updated state internal to the model.
+
+INTERMEDIATE:
+Supporting calculated quantity that is not primarily an external interface or persistent state.
+
+EXPOSED_OUTPUT:
+Formal output exposed for consumption by other model components.
+
+POLICY_STATE:
+Policy/account/benefit state maintained through projection.
+
+RESULT:
+Final or reportable model result.
+
+A component may have multiple Level 4 roles.
+
+--------------------------------------------------
+CONFIDENCE
+--------------------------------------------------
+
+For EACH of the four levels, provide a separate confidence:
+
+HIGH
+MEDIUM
+LOW
+
+Use the following rules.
+
+HIGH:
+Classification is directly supported by model documentation, formulas, native structure, and/or clear input-output dependencies.
+
+MEDIUM:
+Classification is strongly suggested by implementation and dependency structure but requires some semantic interpretation.
+
+LOW:
+Classification is mainly inferred from naming, incomplete dependencies, or limited evidence.
+
+Do NOT use HIGH confidence based only on a component name.
+
+If confidence is LOW, explain what additional SME information is required.
+
+--------------------------------------------------
+EVIDENCE
+--------------------------------------------------
+
+For every classification, cite the strongest available model evidence, for example:
+
+- native PathWise type
+- parent Library
+- important Inputs
+- important Outputs
+- key expression/calculation
+- upstream component
+- downstream component
+- documentation purpose
+- product-specific switch/branch
+- parameterization
+
+Do not invent evidence.
+
+--------------------------------------------------
+OUTPUT FORMAT
+--------------------------------------------------
+
+Return one row per architecture-level component.
+
+Use this schema:
+
+Component_ID
+Component_Name
+Native_Type
+
+Primary_Domain
+Primary_Capability
+Secondary_Capability
+Capability_Confidence
+Capability_Evidence
+
+Primary_Architecture_Role
+Secondary_Architecture_Role
+Architecture_Role_Confidence
+Architecture_Role_Evidence
+
+Reuse_Class
+Reuse_Confidence
+Reuse_Evidence
+
+Interface_Dependency_Roles
+Interface_Confidence
+Interface_Evidence
+
+SME_Review_Required
+SME_Review_Question
+
+Classification_Notes
+
+--------------------------------------------------
+IMPORTANT CLASSIFICATION RULES
+--------------------------------------------------
+
+1. Do not classify every field-level node manually.
+
+Prioritize:
+- Libraries
+- Project-level calculations
+- important UDFs
+- important selectors/rules
+- formal Inputs and Outputs
+- major state variables
+- major market/assumption interfaces
+
+2. Low-level temporary calculation variables should normally inherit the capability of their parent component unless there is strong evidence that they perform a distinct model function.
+
+3. Library Outputs normally inherit the Business Capability of their parent Library, while their Level 4 role should be EXPOSED_OUTPUT.
+
+4. Library Inputs normally inherit the Business Capability of the consuming Library, while their Level 4 role should include LIBRARY_INPUT and may additionally include MARKET_INPUT, ASSUMPTION, CONTROL_INPUT, etc.
+
+5. Project-level calculations may be ORCHESTRATOR, AGGREGATOR, TRANSFORMATION, or another role depending on what they actually do. Do not automatically classify every project calculation as ORCHESTRATOR.
+
+6. UDFs should be classified as UTILITY only when they provide technical reusable logic. A UDF containing meaningful financial/actuarial methodology may inherit the relevant Business Capability instead.
+
+7. When a component is highly parameterized across products, prefer CONFIGURABLE_COMMON over COMMON_CORE.
+
+8. When a common calculation framework contains product-specific branches, consider COMMON_CORE_WITH_EXTENSION.
+
+9. If there is insufficient evidence, use UNCLEAR rather than guessing.
+
+10. The purpose of this classification is model architecture and factorization, not documentation summarization.
+
+--------------------------------------------------
+FINAL CHECK
+--------------------------------------------------
+
+Before finalizing each classification, ask:
+
+1. What does this component actually do?
+2. Why does it exist?
+3. What does it consume?
+4. What does it produce?
+5. Who consumes its outputs?
+6. Does it maintain state or simply transform data?
+7. Is the logic parameterized or hard-coded by product?
+8. Could another product reuse it without changing methodology?
+9. Am I classifying its own function, or accidentally classifying its downstream usage?
+
+If evidence is insufficient, lower confidence and require SME review.
