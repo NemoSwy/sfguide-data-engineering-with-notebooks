@@ -1,435 +1,405 @@
-You are acting as a senior quantitative model architect for a PathWise insurance valuation model.
+nodes.csv gives you normalized PathWise objects, but not necessarily normalized business/architecture components. Your own proposal notes that the goal is a "Component Registry" plus a dependency graph that supports reuse discovery, impact analysis, and model navigation.
 
-Your task is to classify model components using the existing PathWise model knowledge, including:
+The challenge is that a mature PathWise model evolves over years:
 
-- nodes.csv
-- edges.csv
-- model documentation
-- component names and hierarchy
-- Inputs / Dictionary / Computation / Projection / Outputs
-- Data Source lineage
-- upstream/downstream dependencies
-- UDF usage
-- existing reviewed architecture labels, if available
+Plain Text
+1
+Product logic
+2
+↓
+3
+Enhancement
+4
+↓
+5
+Workaround
+6
+↓
+7
+New product
+8
+↓
+9
+Copied library
+10
+↓
+11
+Refactoring
+Show more lines
 
-Do NOT classify a component based only on its name.
+As a result:
 
-Use implementation structure, inputs, outputs, formulas, dependencies, and documented business purpose.
+Plain Text
+1
+One business capability
+Show more lines
 
-The objective is to support model factorization, reusable architecture design, and future model-change analysis.
+may be implemented by:
 
-For each model component, assign the following four architecture classifications.
+Plain Text
+1
+Library A
+2
+Library B
+3
+Project Calculation C
+4
+UDF D
+5
+Projection Variable E
+Show more lines
 
---------------------------------------------------
-LEVEL 1 — BUSINESS CAPABILITY
---------------------------------------------------
+So architecture components cannot be identified from hierarchy alone.
 
-Identify WHAT business, actuarial, financial, or model function the component performs.
+Proposed Architecture
 
-Use the following controlled hierarchy.
+Instead of:
 
-DOMAIN: Product & Configuration
-- Product Identification & Classification
-- Product Configuration Selection
-- Assumption Selection & Mapping
+Plain Text
+1
+nodes.csv
+2
+↓
+3
+classification
+Show more lines
 
-DOMAIN: Time & Projection Control
-- Projection Timeline Management
-- Event Timing & Eligibility
-- Roll-Forward / State Timing
+Use:
 
-DOMAIN: Economic Scenario Generation
-- Interest Rate Scenario Generation
-- Interest Rate Curve Transformation
-- Equity / Index Market Scenario
-- Random Variable Generation
-- Market Shock Selection & Application
+Plain Text
+1
+nodes.csv
+2
+edges.csv
+3
+documentation
+4
+↓
+5
+Component Discovery
+6
+↓
+7
+Candidate Architecture Components
+8
+↓
+9
+LLM Classification
+10
+↓
+11
+Architecture Registry
+Show more lines
+Phase 1 – Structural Discovery
 
-DOMAIN: Investment / Index Modeling
-- Index Strategy Representation
-- Hybrid Index Construction
-- Option / Derivative Pricing
-- Pricing Method Selection
+Use deterministic rules first.
 
-DOMAIN: Rate Setting
-- Option Budget Determination
-- Crediting Parameter Setting
-- Strategy / Rate Selection
-- Renewal / Reset Processing
+Identify:
 
-DOMAIN: Account Crediting
-- Crediting Event Determination
-- Crediting Method Selection
-- Strategy Return Calculation
-- Account Credit Calculation
-- Product-Specific Credit Adjustment
-- Account Credit Application
+Plain Text
+1
+Libraries
+2
+Project Calculations
+3
+UDFs
+4
+Major Interfaces
+5
+Major State Variables
+Show more lines
 
-DOMAIN: Account & Policy State
-- Account Value Roll-Forward
-- Account Balance Management
-- Policy State Evolution
+Compute graph metrics:
 
-DOMAIN: Policyholder Behavior / Decrements
-- Mortality
-- Lapse / Surrender
-- Dynamic Lapse Behavior
-- Partial Withdrawal Behavior
-- Full Withdrawal / Surrender Event
-- Annuitization Behavior
-
-DOMAIN: Benefits & Charges
-- Policy Fee Calculation
-- Rider Charge Calculation
-- Surrender Charge / MVA
-- Death Benefit
-- Living Benefit
-- Surrender Benefit
-- Annuitization Benefit
-- Rider Benefit Base Evolution
-
-DOMAIN: Asset / General Account
-- Bond Portfolio Management
-- Duration / Convexity Management
-- General Account Yield
-- Asset-Liability Interaction
-
-DOMAIN: Cash Flow & Valuation
-- Premium / Deposit Cash Flow
-- Withdrawal Cash Flow
-- Benefit Cash Flow
-- Fee Cash Flow
-- Account / Investment Cash Flow
-- Net Policy Cash Flow
-- Risk-Neutral Valuation
-- Real-World Projection
-- Discounting
-- Present Value Aggregation
-- Terminal Value / Provision
-
-DOMAIN: Risk / Results / Model Infrastructure
-- Market Greeks
-- Interest Rate Sensitivity
-- Equity / Volatility Sensitivity
-- Result Aggregation
-- Model Output Preparation
-- Data Input Management
-- Variable / Interface Mapping
-- Calculation Orchestration
-- Utility Functions
-
-If none clearly applies, classify as:
-UNCLASSIFIED
-
-Do not create a new capability unless there is strong evidence that the taxonomy is missing a materially different model function.
-
-For components that serve several purposes, assign:
-- Primary Capability
-- optional Secondary Capability
-
-The Primary Capability should represent what the component itself primarily does, not every downstream use of its output.
+Plain Text
+1
+fan in
+2
+fan out
+3
+cross-library edges
+4
+dependency clusters
+Show more lines
 
 Example:
-A Two-Factor Hull-White library should normally be classified as:
 
-Primary Domain:
-Economic Scenario Generation
-
-Primary Capability:
-Interest Rate Scenario Generation
-
-It may have a Secondary Usage such as:
-Risk-Neutral Valuation Support
-
-Do NOT classify it primarily as Valuation merely because its rates are later used for discounting.
-
---------------------------------------------------
-LEVEL 2 — ARCHITECTURAL ROLE
---------------------------------------------------
-
-Select ONE primary architectural role:
-
-SOURCE
-CONFIGURATION
-SELECTOR_ROUTER
-TRANSFORMATION
-STATE_EVOLUTION
-PRICING_VALUATION
-EVENT_GENERATOR
-AGGREGATOR
-INTERFACE
-ORCHESTRATOR
-UTILITY
-
-Definitions:
-
-SOURCE:
-Provides raw or externally supplied model information.
-
-CONFIGURATION:
-Defines parameters, assumptions, product setup, or configurable behavior.
-
-SELECTOR_ROUTER:
-Chooses among calculation paths, methodologies, products, strategies, or assumptions.
-
-TRANSFORMATION:
-Transforms inputs into derived model quantities without primarily maintaining recursive state.
-
-STATE_EVOLUTION:
-Maintains or updates model state through projection time or paths.
-
-PRICING_VALUATION:
-Directly calculates economic value, price, PV, or valuation quantity.
-
-EVENT_GENERATOR:
-Determines or produces policyholder or contract events such as lapse, withdrawal, death, or renewal.
-
-AGGREGATOR:
-Combines multiple model outputs, cash flows, paths, policies, or results.
-
-INTERFACE:
-Primarily exposes or maps information between model components.
-
-ORCHESTRATOR:
-Coordinates multiple model components or centralized project-level calculations.
-
-UTILITY:
-Provides reusable technical functionality without owning a primary business capability.
-
-Optional:
-Assign one Secondary Architectural Role if strongly supported.
-
---------------------------------------------------
-LEVEL 3 — REUSE / EXTENSION ROLE
---------------------------------------------------
-
-Classify the component from a future model architecture perspective.
-
-Choose ONE:
-
-COMMON_CORE
-CONFIGURABLE_COMMON
-COMMON_CORE_WITH_EXTENSION
-PRODUCT_SPECIFIC
-MODEL_SPECIFIC
-UTILITY
-UNCLEAR
-
-Definitions:
-
-COMMON_CORE:
-Stable logic that should generally be reusable across products/models with little or no product-specific modification.
-
-CONFIGURABLE_COMMON:
-Reusable common logic where product differences should primarily be handled through parameters, assumptions, or configuration.
-
-COMMON_CORE_WITH_EXTENSION:
-A reusable core exists, but product-specific extension points or specialized branches are expected.
-
-PRODUCT_SPECIFIC:
-The component represents an intentionally product-specific rule or behavior.
-
-MODEL_SPECIFIC:
-The component reflects the implementation or legacy architecture of this particular model and should not automatically be treated as reusable business logic.
-
-UTILITY:
-Reusable technical helper functionality.
-
-UNCLEAR:
-Current evidence is insufficient to make a reliable factorization decision.
-
-Important:
-Do NOT label something COMMON_CORE simply because it is used by many downstream nodes.
-
-Reuse classification requires evidence about:
-- methodology stability
-- parameterization
-- product dependence
-- business rule dependence
-- interface stability
-
---------------------------------------------------
-LEVEL 4 — INTERFACE / DEPENDENCY ROLE
---------------------------------------------------
-
-Select all applicable roles:
-
-EXTERNAL_INPUT
-MODEL_PARAMETER
-ASSUMPTION
-MARKET_INPUT
-CONTROL_INPUT
-LIBRARY_INPUT
-INTERNAL_STATE
-INTERMEDIATE
-EXPOSED_OUTPUT
-POLICY_STATE
-RESULT
-
-Definitions:
-
-EXTERNAL_INPUT:
-Originates outside the model calculation logic.
-
-MODEL_PARAMETER:
-Model or methodology parameter controlling calculation behavior.
-
-ASSUMPTION:
-Actuarial/product/business assumption.
-
-MARKET_INPUT:
-Market or economic input such as rate, equity, volatility, or curve information.
-
-CONTROL_INPUT:
-Controls routing, eligibility, branching, or method selection.
-
-LIBRARY_INPUT:
-Formal input interface of a PathWise Library.
-
-INTERNAL_STATE:
-Persistent or recursively updated state internal to the model.
-
-INTERMEDIATE:
-Supporting calculated quantity that is not primarily an external interface or persistent state.
-
-EXPOSED_OUTPUT:
-Formal output exposed for consumption by other model components.
-
-POLICY_STATE:
-Policy/account/benefit state maintained through projection.
-
-RESULT:
-Final or reportable model result.
-
-A component may have multiple Level 4 roles.
-
---------------------------------------------------
-CONFIDENCE
---------------------------------------------------
-
-For EACH of the four levels, provide a separate confidence:
-
-HIGH
-MEDIUM
-LOW
-
-Use the following rules.
-
-HIGH:
-Classification is directly supported by model documentation, formulas, native structure, and/or clear input-output dependencies.
-
-MEDIUM:
-Classification is strongly suggested by implementation and dependency structure but requires some semantic interpretation.
-
-LOW:
-Classification is mainly inferred from naming, incomplete dependencies, or limited evidence.
-
-Do NOT use HIGH confidence based only on a component name.
-
-If confidence is LOW, explain what additional SME information is required.
-
---------------------------------------------------
-EVIDENCE
---------------------------------------------------
-
-For every classification, cite the strongest available model evidence, for example:
-
-- native PathWise type
-- parent Library
-- important Inputs
-- important Outputs
-- key expression/calculation
-- upstream component
-- downstream component
-- documentation purpose
-- product-specific switch/branch
-- parameterization
-
-Do not invent evidence.
-
---------------------------------------------------
-OUTPUT FORMAT
---------------------------------------------------
-
-Return one row per architecture-level component.
-
-Use this schema:
-
-Component_ID
-Component_Name
-Native_Type
-
-Primary_Domain
-Primary_Capability
-Secondary_Capability
-Capability_Confidence
-Capability_Evidence
-
-Primary_Architecture_Role
-Secondary_Architecture_Role
-Architecture_Role_Confidence
-Architecture_Role_Evidence
-
-Reuse_Class
-Reuse_Confidence
-Reuse_Evidence
-
-Interface_Dependency_Roles
-Interface_Confidence
-Interface_Evidence
-
-SME_Review_Required
-SME_Review_Question
-
-Classification_Notes
-
---------------------------------------------------
-IMPORTANT CLASSIFICATION RULES
---------------------------------------------------
-
-1. Do not classify every field-level node manually.
-
-Prioritize:
-- Libraries
-- Project-level calculations
-- important UDFs
-- important selectors/rules
-- formal Inputs and Outputs
-- major state variables
-- major market/assumption interfaces
-
-2. Low-level temporary calculation variables should normally inherit the capability of their parent component unless there is strong evidence that they perform a distinct model function.
-
-3. Library Outputs normally inherit the Business Capability of their parent Library, while their Level 4 role should be EXPOSED_OUTPUT.
-
-4. Library Inputs normally inherit the Business Capability of the consuming Library, while their Level 4 role should include LIBRARY_INPUT and may additionally include MARKET_INPUT, ASSUMPTION, CONTROL_INPUT, etc.
-
-5. Project-level calculations may be ORCHESTRATOR, AGGREGATOR, TRANSFORMATION, or another role depending on what they actually do. Do not automatically classify every project calculation as ORCHESTRATOR.
-
-6. UDFs should be classified as UTILITY only when they provide technical reusable logic. A UDF containing meaningful financial/actuarial methodology may inherit the relevant Business Capability instead.
-
-7. When a component is highly parameterized across products, prefer CONFIGURABLE_COMMON over COMMON_CORE.
-
-8. When a common calculation framework contains product-specific branches, consider COMMON_CORE_WITH_EXTENSION.
-
-9. If there is insufficient evidence, use UNCLEAR rather than guessing.
-
-10. The purpose of this classification is model architecture and factorization, not documentation summarization.
-
---------------------------------------------------
-FINAL CHECK
---------------------------------------------------
-
-Before finalizing each classification, ask:
-
-1. What does this component actually do?
-2. Why does it exist?
-3. What does it consume?
-4. What does it produce?
-5. Who consumes its outputs?
-6. Does it maintain state or simply transform data?
-7. Is the logic parameterized or hard-coded by product?
-8. Could another product reuse it without changing methodology?
-9. Am I classifying its own function, or accidentally classifying its downstream usage?
-
-If evidence is insufficient, lower confidence and require SME review.
+Plain Text
+1
+InterestRate Library
+2
+|
+3
++-- bp_zcb
+4
++-- bond_variance_5y
+5
++-- rate_scenario
+Show more lines
+
+This already suggests a coherent component.
+
+Phase 2 – Dependency Community Detection
+
+Treat the model as a graph.
+
+From:
+
+Plain Text
+1
+nodes.csv
+2
+edges.csv
+Show more lines
+
+build:
+
+Plain Text
+1
+NetworkX graph
+Show more lines
+
+Then identify:
+
+Plain Text
+1
+strongly connected groups
+2
+high-density subgraphs
+3
+communities
+Show more lines
+
+Example:
+
+Plain Text
+1
+HullWhite Library
+2
+Discount Calculation
+3
+Rate Curve Transform
+Show more lines
+
+may cluster into:
+
+Plain Text
+1
+Interest Rate Methodology Component
+Show more lines
+
+even if spread across multiple libraries.
+
+This is something hierarchy alone misses.
+
+Phase 3 – Methodology Fingerprinting
+
+Create a fingerprint for every node:
+
+Plain Text
+1
+Consumes
+2
+Produces
+3
+Calls UDFs
+4
+Uses Data Sources
+5
+Maintains State?
+6
+Uses prev()?
+7
+Projection Variable?
+Show more lines
+
+Example:
+
+Plain Text
+1
+factor_det
+2
+factor_stoch
+3
+mean_reversion
+4
+sigma_t
+Show more lines
+
+all share:
+
+Plain Text
+1
+market inputs
+2
+stochastic projection
+3
+interest-rate state evolution
+Show more lines
+
+and likely belong to the same methodology.
+
+Phase 4 – LLM Component Discovery
+
+This is where an LLM adds value.
+
+Instead of classifying individual nodes, give the LLM:
+
+Plain Text
+1
+Library summary
+2
+Top inputs
+3
+Top outputs
+4
+Important edges
+5
+Important formulas
+6
+Referenced data sources
+7
+Referenced UDFs
+Show more lines
+
+Ask:
+
+Plain Text
+1
+What coherent business capability does this
+2
+group of objects collectively implement?
+Show more lines
+
+The LLM is much better at:
+
+Plain Text
+1
+semantic grouping
+Show more lines
+
+than:
+
+Plain Text
+1
+raw dependency extraction
+Show more lines
+Phase 5 – Human-in-the-loop Architecture Registry
+
+Produce:
+
+Plain Text
+1
+component_registry.csv
+Show more lines
+
+Example:
+
+Component	EvidenceInterest Rate Scenario Engine	HullWhite + rate state variables + curve transforms
+Bond Portfolio Engine	bond_variance + bp_zcb + duration calculations
+FIA Crediting Engine	account credit + strategy return + option budget
+Policy State Engine	account value + rider base + policy state
+
+Then an SME confirms or adjusts.
+
+Important Principle
+
+Do not assume:
+
+Plain Text
+1
+Library = Architecture Component
+Show more lines
+
+and do not assume:
+
+Plain Text
+1
+Variable = Architecture Component
+Show more lines
+
+Instead use:
+
+Plain Text
+1
+Architecture Component
+2
+=
+3
+cohesive methodology
+4
++
+5
+shared purpose
+6
++
+7
+strong internal dependency
+8
++
+9
+stable interface
+Show more lines
+
+The component may span:
+
+Plain Text
+1
+multiple libraries
+2
+multiple project calculations
+3
+multiple UDFs
+Show more lines
+
+if the implementation has drifted over time.
+
+What I would build for your FIA work
+
+A three-layer knowledge model:
+
+Plain Text
+1
+Layer 1
+2
+PathWise Objects
+3
+(nodes.csv)
+4
+ 
+5
+Layer 2
+6
+Methodology Clusters
+7
+(graph-derived)
+8
+ 
+9
+Layer 3
+10
+Architecture Components
+11
+(LLM + SME verified)
+Show more lines
+
+This avoids manually labeling thousands of nodes, avoids assuming the original model organization is correct, and lets the architecture emerge from:
+
+Plain Text
+1
+structure
+2
++
+3
+dependencies
+4
++
+5
+data lineage
+6
++
+7
+semantic interpretation
+Show more lines
+
+which is much closer to how senior model developers actually understand a large actuarial model.
