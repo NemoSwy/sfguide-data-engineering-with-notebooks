@@ -1,405 +1,656 @@
-nodes.csv gives you normalized PathWise objects, but not necessarily normalized business/architecture components. Your own proposal notes that the goal is a "Component Registry" plus a dependency graph that supports reuse discovery, impact analysis, and model navigation.
+You are acting as a senior quantitative model architect and graph analytics engineer.
 
-The challenge is that a mature PathWise model evolves over years:
+I already have a deterministic PathWise technical graph extracted from exported model documentation and Data Source schema.
 
-Plain Text
-1
-Product logic
-2
-↓
-3
-Enhancement
-4
-↓
-5
-Workaround
-6
-↓
-7
-New product
-8
-↓
-9
-Copied library
-10
-↓
-11
-Refactoring
-Show more lines
+Authoritative inputs:
 
-As a result:
+- nodes.csv
+- edges.csv
+- optional model documentation / formulas / node metadata
 
-Plain Text
-1
-One business capability
-Show more lines
+Do NOT rebuild the knowledge graph from raw text.
+Treat nodes.csv and edges.csv as the source of truth for technical structure and dependencies.
 
-may be implemented by:
+The goal is to reduce thousands of low-level PathWise objects into a manageable number of candidate methodology groups and architecture components that can support model factorization, reuse analysis, and future model-change impact analysis.
 
-Plain Text
-1
-Library A
-2
-Library B
-3
-Project Calculation C
-4
-UDF D
-5
-Projection Variable E
-Show more lines
+This is inspired by GraphRAG-style hierarchical graph community detection, but the PathWise graph already exists and should be used directly.
 
-So architecture components cannot be identified from hierarchy alone.
+==================================================
+OBJECTIVE
+==================================================
 
-Proposed Architecture
+Build a pipeline:
 
-Instead of:
+PathWise Nodes + Direct Edges
+    ↓
+Graph-aware candidate communities
+    ↓
+Community evidence packages
+    ↓
+LLM semantic labeling
+    ↓
+KEEP / MERGE / SPLIT recommendations
+    ↓
+Candidate Architecture Components
+    ↓
+Human / SME review
 
-Plain Text
-1
+Do NOT assume:
+
+Library = Architecture Component
+
+and do NOT assume:
+
+Graph Community = Architecture Component
+
+A graph community is only a structural candidate.
+
+A final architecture component should represent:
+
+cohesive methodology
++ shared business/model purpose
++ meaningful internal dependency
++ relatively stable interface
++ meaningful change boundary
+
+==================================================
+PHASE 1 — LOAD AND CLEAN THE TECHNICAL GRAPH
+==================================================
+
+Read:
+
 nodes.csv
-2
-↓
-3
-classification
-Show more lines
+edges.csv
+
+Build a directed NetworkX graph.
+
+Use canonical node IDs.
+
+Preserve node metadata such as:
+
+- native_type
+- scope
+- parent library/group
+- Data Source
+- input/output status
+- Dictionary / Computation / Projection
+- UDF
+- source location
+- formulas / expressions when available
+
+Preserve edge metadata such as:
+
+- relation type
+- resolution method
+- confidence
+- source/evidence
+- direct edge only
+
+Exclude or down-weight clearly technical noise where appropriate, such as:
+
+- comments
+- literals
+- built-in functions
+- unresolved placeholders
+- synthetic UNKNOWN nodes
+- trivial local temporary variables
+
+Do not delete meaningful technical nodes from the source data; instead allow them to receive lower clustering weight.
+
+==================================================
+PHASE 2 — CREATE NODE FINGERPRINTS
+==================================================
+
+For each node, create a structured fingerprint.
+
+Include:
+
+- node name
+- native type
+- parent Library / Project Calculation
+- scope
+- major direct predecessors
+- major direct successors
+- Data Sources used
+- Library Inputs
+- Library Outputs
+- UDFs called
+- whether it maintains state
+- whether it uses prev()/last() or equivalent temporal logic
+- whether it is a Projection variable
+- whether it is an Input / Output / State / Selector
+- representative formula or expression when available
+- cross-library incoming edges
+- cross-library outgoing edges
+
+The fingerprint should summarize what the node does structurally, not invent business meaning.
+
+==================================================
+PHASE 3 — GRAPH STRUCTURAL FEATURES
+==================================================
+
+Compute useful graph features such as:
+
+- in-degree
+- out-degree
+- fan-in
+- fan-out
+- cross-library incoming edges
+- cross-library outgoing edges
+- boundary/interface score
+- parent Library
+- shared Data Source usage
+- shared downstream consumers
+- shared upstream providers
+- stateful indicator
+- input/output indicator
+
+Do NOT use strongly connected components as the main architecture method.
+
+SCCs may be reported, but this model is primarily a directed dependency/data-flow graph.
+
+Prioritize:
+
+- dependency neighborhoods
+- shared interfaces
+- shared state
+- shared upstream/downstream patterns
+- cross-library boundaries
+
+==================================================
+PHASE 4 — HIERARCHICAL COMMUNITY DETECTION
+==================================================
+
+Use Leiden community detection, preferably hierarchical Leiden if available.
+
+If the current graph must be converted to an undirected weighted graph for Leiden, preserve the original directed graph separately for later interface analysis.
+
+Create edge weights that reflect architectural relevance.
+
+Suggested weighting logic:
+
+Higher weight:
+- direct data dependency
+- same Library / same Project Calculation
+- shared state evolution
+- formal Input/Output relationship
+- repeated strong methodology relationship
+
+Lower weight:
+- generic utility usage
+- very common global Data Source dependency
+- generic timing/calendar dependency
+- common technical helper UDFs
+- broad market variables used everywhere
+
+Do not allow high-degree generic nodes such as:
+time,
+rate,
+account_value,
+generic market inputs,
+common utility UDFs
+
+to dominate community formation.
+
+Produce multiple hierarchy levels if possible.
+
+Example:
+
+Level 0:
+small methodology clusters
+
+Level 1:
+larger functional groups
+
+Level 2:
+candidate architecture domains
+
+Do not automatically treat the highest-level community as the best architecture component.
+
+==================================================
+PHASE 5 — SEMANTIC EVIDENCE PACKAGE FOR EACH COMMUNITY
+==================================================
+
+For every candidate community, generate a compact evidence package containing:
+
+Community ID
+Hierarchy Level
+Number of nodes
+
+Top member nodes
+Parent Libraries represented
+Project Calculations represented
+Major Inputs
+Major Outputs
+Major State Variables
+Major Data Sources
+Major UDFs
+Representative formulas
+Important internal edges
+Important incoming boundary edges
+Important outgoing boundary edges
+Cross-library dependencies
+Stateful behavior
+Control/routing logic
+Potential external interface
+
+Also include graph metrics such as:
+
+- internal edge density
+- external edge ratio
+- fan-in
+- fan-out
+- number of Libraries spanned
+
+Do NOT send thousands of raw nodes directly to the LLM.
+
+Select representative nodes and summarize the rest.
+
+==================================================
+PHASE 6 — LLM SEMANTIC LABELING
+==================================================
+
+For each community evidence package, ask the LLM:
+
+1. What coherent financial, actuarial, or model methodology does this group appear to implement?
+
+2. What approved business capability does it most closely match?
+
+3. Is this community internally coherent enough to remain one candidate component?
+
+4. Should it be:
+   KEEP
+   MERGE
+   SPLIT
+   UNCLEAR
+
+5. What is the confidence?
+
+6. What evidence supports the conclusion?
+
+The LLM must not classify based only on names.
+
+It should use:
+
+- inputs
+- outputs
+- formulas
+- state behavior
+- dependency structure
+- documented purpose
+- routing logic
+- parent Libraries
+- downstream use
+
+==================================================
+APPROVED BUSINESS CAPABILITY TAXONOMY
+==================================================
+
+Use this controlled taxonomy.
+
+Do NOT freely invent new top-level categories unless no reasonable match exists.
+
+DOMAIN: Product & Configuration
+- Product Identification & Classification
+- Product Configuration Selection
+- Assumption Selection & Mapping
+
+DOMAIN: Time & Projection Control
+- Projection Timeline Management
+- Event Timing & Eligibility
+- Roll-Forward / State Timing
+
+DOMAIN: Economic Scenario Generation
+- Interest Rate Scenario Generation
+- Interest Rate Curve Transformation
+- Equity / Index Market Scenario
+- Random Variable Generation
+- Market Shock Selection & Application
+
+DOMAIN: Investment / Index Modeling
+- Index Strategy Representation
+- Hybrid Index Construction
+- Option / Derivative Pricing
+- Pricing Method Selection
+
+DOMAIN: Rate Setting
+- Option Budget Determination
+- Crediting Parameter Setting
+- Strategy / Rate Selection
+- Renewal / Reset Processing
+
+DOMAIN: Account Crediting
+- Crediting Event Determination
+- Crediting Method Selection
+- Strategy Return Calculation
+- Account Credit Calculation
+- Product-Specific Credit Adjustment
+- Account Credit Application
+
+DOMAIN: Account & Policy State
+- Account Value Roll-Forward
+- Account Balance Management
+- Policy State Evolution
+
+DOMAIN: Policyholder Behavior / Decrements
+- Mortality
+- Lapse / Surrender
+- Dynamic Lapse Behavior
+- Partial Withdrawal Behavior
+- Full Withdrawal / Surrender Event
+- Annuitization Behavior
+
+DOMAIN: Benefits & Charges
+- Policy Fee Calculation
+- Rider Charge Calculation
+- Surrender Charge / MVA
+- Death Benefit
+- Living Benefit
+- Surrender Benefit
+- Annuitization Benefit
+- Rider Benefit Base Evolution
+
+DOMAIN: Asset / General Account
+- Bond Portfolio Management
+- Duration / Convexity Management
+- General Account Yield
+- Asset-Liability Interaction
+
+DOMAIN: Cash Flow & Valuation
+- Premium / Deposit Cash Flow
+- Withdrawal Cash Flow
+- Benefit Cash Flow
+- Fee Cash Flow
+- Account / Investment Cash Flow
+- Net Policy Cash Flow
+- Risk-Neutral Valuation
+- Real-World Projection
+- Discounting
+- Present Value Aggregation
+- Terminal Value / Provision
+
+DOMAIN: Risk / Results / Model Infrastructure
+- Market Greeks
+- Interest Rate Sensitivity
+- Equity / Volatility Sensitivity
+- Result Aggregation
+- Model Output Preparation
+- Data Input Management
+- Variable / Interface Mapping
+- Calculation Orchestration
+- Utility Functions
+
+If there is insufficient evidence:
+UNCLASSIFIED
+
+==================================================
+PHASE 7 — ARCHITECTURE ROLE CLASSIFICATION
+==================================================
+
+For each candidate component, assign one primary role:
+
+SOURCE
+CONFIGURATION
+SELECTOR_ROUTER
+TRANSFORMATION
+STATE_EVOLUTION
+PRICING_VALUATION
+EVENT_GENERATOR
+AGGREGATOR
+INTERFACE
+ORCHESTRATOR
+UTILITY
+
+Optional secondary role allowed.
+
+==================================================
+PHASE 8 — REUSE / EXTENSION CLASSIFICATION
+==================================================
+
+Assign one:
+
+COMMON_CORE
+CONFIGURABLE_COMMON
+COMMON_CORE_WITH_EXTENSION
+PRODUCT_SPECIFIC
+MODEL_SPECIFIC
+UTILITY
+UNCLEAR
+
+Do NOT infer COMMON_CORE only because the component has many dependencies.
+
+Reuse classification should consider:
+
+- product-specific branches
+- configuration dependence
+- methodology stability
+- parameterization
+- interface stability
+- whether another product could reuse the logic without changing methodology
+
+==================================================
+PHASE 9 — COMPONENT MERGE / SPLIT LOGIC
+==================================================
+
+A community should be SPLIT when:
+
+- it clearly contains multiple unrelated business capabilities
+- it has weak internal cohesion
+- it spans separate stable interfaces
+- one part is common utility and another part is business methodology
+- different subgroups have distinct change boundaries
+
+Two communities should be MERGED when:
+
+- they jointly implement one methodology
+- they share a stable input/output contract
+- their separation appears to reflect historical implementation rather than architecture
+- model changes normally require them to be considered together
+
+Keep communities separate when:
+
+- they are strongly connected only because of shared generic inputs
+- they represent upstream provider vs downstream consumer
+- they have distinct business capabilities
+- they should be reusable independently
+
+==================================================
+PHASE 10 — CONFIDENCE
+==================================================
 
 Use:
 
-Plain Text
-1
-nodes.csv
-2
-edges.csv
-3
-documentation
-4
-↓
-5
-Component Discovery
-6
-↓
-7
-Candidate Architecture Components
-8
-↓
-9
-LLM Classification
-10
-↓
-11
-Architecture Registry
-Show more lines
-Phase 1 – Structural Discovery
+HIGH
+MEDIUM
+LOW
 
-Use deterministic rules first.
+HIGH:
+Strong structural + semantic evidence.
 
-Identify:
+MEDIUM:
+Likely interpretation but requires architecture judgment.
 
-Plain Text
-1
-Libraries
-2
-Project Calculations
-3
-UDFs
-4
-Major Interfaces
-5
-Major State Variables
-Show more lines
+LOW:
+Mostly inferred from names or incomplete graph evidence.
 
-Compute graph metrics:
+For LOW confidence:
+set SME_Review_Required = TRUE.
 
-Plain Text
-1
-fan in
-2
-fan out
-3
-cross-library edges
-4
-dependency clusters
-Show more lines
+==================================================
+PHASE 11 — OUTPUT FILES
+==================================================
 
-Example:
+Generate:
 
-Plain Text
-1
-InterestRate Library
-2
-|
-3
-+-- bp_zcb
-4
-+-- bond_variance_5y
-5
-+-- rate_scenario
-Show more lines
+1. communities.csv
 
-This already suggests a coherent component.
+Fields:
+community_id
+hierarchy_level
+node_count
+internal_edge_count
+external_edge_count
+parent_libraries
+main_data_sources
+main_outputs
+main_inputs
 
-Phase 2 – Dependency Community Detection
+2. community_members.csv
 
-Treat the model as a graph.
+Fields:
+community_id
+node_id
+membership_level
+node_role
+importance_score
 
-From:
+3. community_interfaces.csv
 
-Plain Text
-1
-nodes.csv
-2
-edges.csv
-Show more lines
+Fields:
+community_id
+direction
+external_node_id
+internal_node_id
+relation
+interface_type
 
-build:
+direction:
+INCOMING
+OUTGOING
 
-Plain Text
-1
-NetworkX graph
-Show more lines
+4. component_candidates.csv
 
-Then identify:
+Fields:
 
-Plain Text
-1
-strongly connected groups
-2
-high-density subgraphs
-3
-communities
-Show more lines
+component_candidate_id
+source_community_ids
+proposed_component_name
 
-Example:
+primary_domain
+primary_capability
+secondary_capability
 
-Plain Text
-1
-HullWhite Library
-2
-Discount Calculation
-3
-Rate Curve Transform
-Show more lines
+architecture_role
+secondary_architecture_role
 
-may cluster into:
+reuse_class
 
-Plain Text
-1
-Interest Rate Methodology Component
-Show more lines
+recommendation
+KEEP / MERGE / SPLIT / UNCLEAR
 
-even if spread across multiple libraries.
+confidence
 
-This is something hierarchy alone misses.
+evidence_summary
+main_inputs
+main_outputs
+main_state_variables
+parent_libraries
+cross_library_scope
 
-Phase 3 – Methodology Fingerprinting
+SME_review_required
+SME_review_question
 
-Create a fingerprint for every node:
+5. architecture_summary.csv
 
-Plain Text
-1
-Consumes
-2
-Produces
-3
-Calls UDFs
-4
-Uses Data Sources
-5
-Maintains State?
-6
-Uses prev()?
-7
-Projection Variable?
-Show more lines
+One row per final candidate architecture component.
 
-Example:
+==================================================
+PHASE 12 — IMPORTANT DESIGN PRINCIPLES
+==================================================
 
-Plain Text
-1
-factor_det
-2
-factor_stoch
-3
-mean_reversion
-4
-sigma_t
-Show more lines
+1. Technical graph is authoritative for structure.
 
-all share:
+2. Community detection proposes groups; it does not define architecture.
 
-Plain Text
-1
-market inputs
-2
-stochastic projection
-3
-interest-rate state evolution
-Show more lines
+3. LLM provides semantic interpretation; it does not override graph evidence.
 
-and likely belong to the same methodology.
+4. SME owns final architecture decisions.
 
-Phase 4 – LLM Component Discovery
+5. Prefer stable interfaces and meaningful change boundaries over current PathWise Library boundaries.
 
-This is where an LLM adds value.
+6. A final architecture component may span:
+   - multiple Libraries
+   - Project Calculations
+   - UDFs
+   - major state variables
 
-Instead of classifying individual nodes, give the LLM:
+7. Do not create architecture components around generic utility nodes.
 
-Plain Text
-1
-Library summary
-2
-Top inputs
-3
-Top outputs
-4
-Important edges
-5
-Important formulas
-6
-Referenced data sources
-7
-Referenced UDFs
-Show more lines
+8. Do not merge components simply because they share market data, time variables, or common state.
 
-Ask:
+9. Preserve traceability from:
+   Architecture Component
+   -> Community
+   -> PathWise Nodes
+   -> Source documentation
 
-Plain Text
-1
-What coherent business capability does this
-2
-group of objects collectively implement?
-Show more lines
+10. The objective is model factorization and future model design, not merely graph visualization.
 
-The LLM is much better at:
+==================================================
+FIRST TEST
+==================================================
 
-Plain Text
-1
-semantic grouping
-Show more lines
+Do NOT run this on the entire model first.
 
-than:
+Use a benchmark subset around:
 
-Plain Text
-1
-raw dependency extraction
-Show more lines
-Phase 5 – Human-in-the-loop Architecture Registry
+InterestRate / HullWhite
 
-Produce:
+including its:
 
-Plain Text
-1
-component_registry.csv
-Show more lines
+- Library Inputs
+- Dictionary
+- Computation
+- Projection
+- Outputs
+- UDFs
+- direct upstream Data Sources
+- direct downstream consumers
+
+Generate candidate methodology communities for this subset.
+
+The expected result should identify coherent interest-rate methodology groups rather than grouping unrelated nodes only because they share generic rate/time inputs.
+
+Show:
+
+- detected communities
+- representative nodes
+- proposed semantic labels
+- KEEP/MERGE/SPLIT recommendation
+- confidence
+
+After this benchmark is reviewed, generalize to the full model.
+
+==================================================
+CODE REQUIREMENTS
+==================================================
+
+Write a modular Python implementation.
+
+Use short comments only before major steps.
 
 Example:
 
-Component	EvidenceInterest Rate Scenario Engine	HullWhite + rate state variables + curve transforms
-Bond Portfolio Engine	bond_variance + bp_zcb + duration calculations
-FIA Crediting Engine	account credit + strategy return + option budget
-Policy State Engine	account value + rider base + policy state
+# Build the technical graph.
 
-Then an SME confirms or adjusts.
+# Compute graph features.
 
-Important Principle
+# Run hierarchical Leiden clustering.
 
-Do not assume:
+# Build community evidence packages.
 
-Plain Text
-1
-Library = Architecture Component
-Show more lines
+# Prepare LLM classification payloads.
 
-and do not assume:
+Do not add long comments.
 
-Plain Text
-1
-Variable = Architecture Component
-Show more lines
+If Leiden requires an additional package, clearly list it.
 
-Instead use:
+Do not execute the code.
 
-Plain Text
-1
-Architecture Component
-2
-=
-3
-cohesive methodology
-4
-+
-5
-shared purpose
-6
-+
-7
-strong internal dependency
-8
-+
-9
-stable interface
-Show more lines
+At the end provide:
 
-The component may span:
-
-Plain Text
-1
-multiple libraries
-2
-multiple project calculations
-3
-multiple UDFs
-Show more lines
-
-if the implementation has drifted over time.
-
-What I would build for your FIA work
-
-A three-layer knowledge model:
-
-Plain Text
-1
-Layer 1
-2
-PathWise Objects
-3
-(nodes.csv)
-4
- 
-5
-Layer 2
-6
-Methodology Clusters
-7
-(graph-derived)
-8
- 
-9
-Layer 3
-10
-Architecture Components
-11
-(LLM + SME verified)
-Show more lines
-
-This avoids manually labeling thousands of nodes, avoids assuming the original model organization is correct, and lets the architecture emerge from:
-
-Plain Text
-1
-structure
-2
-+
-3
-dependencies
-4
-+
-5
-data lineage
-6
-+
-7
-semantic interpretation
-Show more lines
-
-which is much closer to how senior model developers actually understand a large actuarial model.
+1. required packages
+2. example command
+3. output files
+4. short explanation of the pipeline
+5. known limitations
