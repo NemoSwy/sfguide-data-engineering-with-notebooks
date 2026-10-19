@@ -1,0 +1,87 @@
+Build an interactive English-language website that explains the structure of our PathWise annuity model.
+
+The primary goal is visual understanding, not a written report.
+
+FILES
+- Full model XML: [PATH]
+- Input NPZ directory: [PATH]
+- External .complib.xml libraries: [PATH, if available]
+- Existing website source as a design reference: [PATH, if available]
+
+First explain whether your current environment can read these files,
+execute Python, and create downloadable source files.
+Do not claim to have inspected files you cannot access.
+
+DELIVERABLE
+Create a self-contained offline HTML website, plus its editable source:
+index.html, styles.css, app.js, model-data.json, and a Python build script.
+Keep processing local to the company-approved environment.
+Do not publish or upload the model to an external hosting service.
+
+THE WEBSITE MUST PROVIDE THREE INTERACTIVE VIEWS
+
+1. Input schema explorer
+Show:
+NPZ file → dataset → fields → dtype → array shape.
+
+Compare the actual NPZ structure with the XML declarations.
+Distinguish declared metadata from metadata verified in the NPZ files.
+Do not dump entire policy datasets into the website.
+
+2. Assumption lookup explorer — the most important view
+Visually trace:
+policy fields + assumption tables
+→ TableIndex or AnnuityInfo
+→ output index or method indicator
+→ the exact table[index].field expression
+→ the consuming library and its input parameter.
+
+Keep TableIndex and AnnuityInfo as separate selectors.
+Clearly distinguish row indices from assumption values.
+
+Clicking a dataset, index, connection, or library must reveal:
+- its upstream and downstream connections;
+- the exact XML parameter expression;
+- the source filename and line number;
+- a short plain-English explanation.
+
+If the component libraries are available, inspect their actual lookup
+logic and explain the matching keys, wildcard rules, and fallback rules.
+If they are unavailable, show the selector as an opaque component.
+Do not invent its internal algorithm.
+
+3. Library dependency map
+Show the main calculation libraries and their input/output dependencies.
+Clicking a library should highlight its immediate upstream and downstream
+neighbors and display its parameter mappings.
+
+DESIGN
+Use a clean, readable diagram-first interface.
+Include search, assumption-category filters, expandable schemas,
+and a “Walk me through” mode.
+Avoid a giant unreadable graph and long blocks of explanatory text.
+
+EVIDENCE AND ACCURACY
+Label connections as:
+- Verified from source
+- Inferred
+- Unresolved
+
+Preserve original files. Do not automatically repair XML or model logic.
+Do not assume the existing reference website is authoritative.
+Do not treat XML validity as evidence of correct valuation.
+
+Where practical, include one explicitly labelled lookup example using
+actual input data, with policy identifiers masked.
+Only show a resolved lookup when it can be verified from the library code
+and input data; otherwise explain what remains unknown.
+
+VALIDATION
+Check that clickable paths, search, filters, and highlighting work.
+Verify source-line references and report any untested functionality.
+Deliver the working website and all source files, not just a proposed plan.
+
+If you cannot execute Python or inspect NPZ files in this environment,
+provide a complete local Python extraction/build script and all website
+source files, with exact commands for running them on my company computer.
+Do not substitute a prose-only explanation.
