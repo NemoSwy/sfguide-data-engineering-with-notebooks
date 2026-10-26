@@ -94,3 +94,660 @@
         </object>
         <object id="ia-AnnFac" label="&lt;b&gt;04 · AnnFac&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep specialized APV, benefit values and LAD cash flows.&lt;/span&gt;" tooltip="Keep specialized APV, benefit values and LAD cash flows.&#10;IA_ESG_combined.txt:1035; import R7. See comparison matrix for qualifications." Model="IA" Library="AnnFac" SourceFile="IA_ESG_combined.txt" SourceLine="1035" ImportRef="R7" Recommendation="Keep specialized APV, benefit values and LAD cash flows.">
           <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="772" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-DeathEvent" label="&lt;b&gt;05 · DeathEvent&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep sampled death, family, confinement and recovery states.&lt;/span&gt;" tooltip="Keep sampled death, family, confinement and recovery states.&#10;IA_ESG_combined.txt:1269; import R10. See comparison matrix for qualifications." Model="IA" Library="DeathEvent" SourceFile="IA_ESG_combined.txt" SourceLine="1269" ImportRef="R10" Recommendation="Keep sampled death, family, confinement and recovery states.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="848" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-LapseEvent" label="&lt;b&gt;06 · LapseEvent&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep sampled lapse and post-death event order.&lt;/span&gt;" tooltip="Keep sampled lapse and post-death event order.&#10;IA_ESG_combined.txt:1347; import R11. See comparison matrix for qualifications." Model="IA" Library="LapseEvent" SourceFile="IA_ESG_combined.txt" SourceLine="1347" ImportRef="R11" Recommendation="Keep sampled lapse and post-death event order.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="924" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-WithdrawalEvent" label="&lt;b&gt;07 · WithdrawalEvent&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Preserve start, amount, utilization and at-issue behavior.&lt;/span&gt;" tooltip="Preserve start, amount, utilization and at-issue behavior.&#10;IA_ESG_combined.txt:1367; import R12. See comparison matrix for qualifications." Model="IA" Library="WithdrawalEvent" SourceFile="IA_ESG_combined.txt" SourceLine="1367" ImportRef="R12" Recommendation="Preserve start, amount, utilization and at-issue behavior.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1000" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-RateSetting" label="&lt;b&gt;08 · RateSetting&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Separate budget rules, option prices and parameter solving.&lt;/span&gt;" tooltip="Separate budget rules, option prices and parameter solving.&#10;IA_ESG_combined.txt:1621; import R15. See comparison matrix for qualifications." Model="IA" Library="RateSetting" SourceFile="IA_ESG_combined.txt" SourceLine="1621" ImportRef="R15" Recommendation="Separate budget rules, option prices and parameter solving.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1076" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-InterestCredit" label="&lt;b&gt;09 · InterestCredit&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Split rate from dollars; keep X5, lock-in and activation.&lt;/span&gt;" tooltip="Split rate from dollars; keep X5, lock-in and activation.&#10;IA_ESG_combined.txt:1419; import R13. See comparison matrix for qualifications." Model="IA" Library="InterestCredit" SourceFile="IA_ESG_combined.txt" SourceLine="1419" ImportRef="R13" Recommendation="Split rate from dollars; keep X5, lock-in and activation.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1152" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-HullWhite" label="&lt;b&gt;10 · HullWhite&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep IA rate generation and separate discount-curve bases.&lt;/span&gt;" tooltip="Keep IA rate generation and separate discount-curve bases.&#10;IA_ESG_combined.txt:364; import R1. See comparison matrix for qualifications." Model="IA" Library="HullWhite" SourceFile="IA_ESG_combined.txt" SourceLine="364" ImportRef="R1" Recommendation="Keep IA rate generation and separate discount-curve bases.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1228" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-InverseGamma" label="&lt;b&gt;11 · InverseGamma&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep equity / volatility generation and pricing inputs.&lt;/span&gt;" tooltip="Keep equity / volatility generation and pricing inputs.&#10;IA_ESG_combined.txt:518; import R5. See comparison matrix for qualifications." Model="IA" Library="InverseGamma" SourceFile="IA_ESG_combined.txt" SourceLine="518" ImportRef="R5" Recommendation="Keep equity / volatility generation and pricing inputs.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1304" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-ThreeBondPortfolio" label="&lt;b&gt;12 · ThreeBondPortfolio&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep the IA three-bond method and yield definitions.&lt;/span&gt;" tooltip="Keep the IA three-bond method and yield definitions.&#10;IA_ESG_combined.txt:593; import R4. See comparison matrix for qualifications." Model="IA" Library="ThreeBondPortfolio" SourceFile="IA_ESG_combined.txt" SourceLine="593" ImportRef="R4" Recommendation="Keep the IA three-bond method and yield definitions.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1380" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-RandomNormal" label="&lt;b&gt;13 · RandomNormal&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep seeds, correlation, antithetics and draw order.&lt;/span&gt;" tooltip="Keep seeds, correlation, antithetics and draw order.&#10;IA_ESG_combined.txt:469; import R6. See comparison matrix for qualifications." Model="IA" Library="RandomNormal" SourceFile="IA_ESG_combined.txt" SourceLine="469" ImportRef="R6" Recommendation="Keep seeds, correlation, antithetics and draw order.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1456" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-HybridIndex" label="&lt;b&gt;14 · HybridIndex&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep IA for now; compare each index and its pricing needs.&lt;/span&gt;" tooltip="Keep IA for now; compare each index and its pricing needs.&#10;IA_ESG_combined.txt:627; import R8. See comparison matrix for qualifications." Model="IA" Library="HybridIndex" SourceFile="IA_ESG_combined.txt" SourceLine="627" ImportRef="R8" Recommendation="Keep IA for now; compare each index and its pricing needs.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1532" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-ESG_Service" label="&lt;b&gt;15 · ESG_Service&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Confirm actual consumers; expose required pricing outputs.&lt;/span&gt;" tooltip="Confirm actual consumers; expose required pricing outputs.&#10;IA_ESG_combined.txt:1704; import R16. See comparison matrix for qualifications." Model="IA" Library="ESG_Service" SourceFile="IA_ESG_combined.txt" SourceLine="1704" ImportRef="R16" Recommendation="Confirm actual consumers; expose required pricing outputs.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1608" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-Gaap" label="&lt;b&gt;16 · Gaap&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep IA host / claim / LAD valuation and accounting bases.&lt;/span&gt;" tooltip="Keep IA host / claim / LAD valuation and accounting bases.&#10;IA_ESG_combined.txt:1486; import R14. See comparison matrix for qualifications." Model="IA" Library="Gaap" SourceFile="IA_ESG_combined.txt" SourceLine="1486" ImportRef="R14" Recommendation="Keep IA host / claim / LAD valuation and accounting bases.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="1760" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-ProductParam" label="&lt;b&gt;ProductParam&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;TableIndex: assumption selection&lt;/span&gt;" tooltip="TableIndex: assumption selection&#10;Omni_merged_repaired.txt:209. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="ProductParam" SourceFile="Omni_merged_repaired.txt" SourceLine="209" Role="TableIndex: assumption selection">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="240" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-GMxBInfo" label="&lt;b&gt;GMxBInfo&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Product and rider setup&lt;/span&gt;" tooltip="Product and rider setup&#10;Omni_merged_repaired.txt:299. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="GMxBInfo" SourceFile="Omni_merged_repaired.txt" SourceLine="299" Role="Product and rider setup">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="316" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-TermRenewSurrChg" label="&lt;b&gt;TermRenewSurrChg&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Renewal and surrender-charge periods&lt;/span&gt;" tooltip="Renewal and surrender-charge periods&#10;Omni_merged_repaired.txt:469. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="TermRenewSurrChg" SourceFile="Omni_merged_repaired.txt" SourceLine="469" Role="Renewal and surrender-charge periods">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="392" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-AnnImpvFac" label="&lt;b&gt;AnnImpvFac&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Mortality improvement&lt;/span&gt;" tooltip="Mortality improvement&#10;Omni_merged_repaired.txt:525. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="AnnImpvFac" SourceFile="Omni_merged_repaired.txt" SourceLine="525" Role="Mortality improvement">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="468" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-MortAnnImpv" label="&lt;b&gt;MortAnnImpv&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Mortality rates; CB variants require review&lt;/span&gt;" tooltip="Mortality rates; CB variants require review&#10;Omni_merged_repaired.txt:569. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="MortAnnImpv" SourceFile="Omni_merged_repaired.txt" SourceLine="569" Role="Mortality rates; CB variants require review">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="544" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-DynamicLapse" label="&lt;b&gt;DynamicLapse&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Lapse probability&lt;/span&gt;" tooltip="Lapse probability&#10;Omni_merged_repaired.txt:720. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="DynamicLapse" SourceFile="Omni_merged_repaired.txt" SourceLine="720" Role="Lapse probability">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="620" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-ITM_CB" label="&lt;b&gt;ITM_CB&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;ITM interface; economic inputs unresolved&lt;/span&gt;" tooltip="ITM interface; economic inputs unresolved&#10;Omni_merged_repaired.txt:2450. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="ITM_CB" SourceFile="Omni_merged_repaired.txt" SourceLine="2450" Role="ITM interface; economic inputs unresolved">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="696" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-GLBPartialWD" label="&lt;b&gt;GLBPartialWD&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Partial comparison: income / withdrawal amounts&lt;/span&gt;" tooltip="Partial comparison: income / withdrawal amounts&#10;Omni_merged_repaired.txt:1444. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="GLBPartialWD" SourceFile="Omni_merged_repaired.txt" SourceLine="1444" Role="Partial comparison: income / withdrawal amounts">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="772" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-AnnuityFactor" label="&lt;b&gt;AnnuityFactor&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Basic factors; not full IA APV / LAD coverage&lt;/span&gt;" tooltip="Basic factors; not full IA APV / LAD coverage&#10;Omni_merged_repaired.txt:1604. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="AnnuityFactor" SourceFile="Omni_merged_repaired.txt" SourceLine="1604" Role="Basic factors; not full IA APV / LAD coverage">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="848" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-Decrement" label="&lt;b&gt;Decrement&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Policy-count movements; not sampled events&lt;/span&gt;" tooltip="Policy-count movements; not sampled events&#10;Omni_merged_repaired.txt:953. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="Decrement" SourceFile="Omni_merged_repaired.txt" SourceLine="953" Role="Policy-count movements; not sampled events">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="924" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-WithdrawalEvent" label="&lt;b&gt;WithdrawalEvent&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Withdrawal initiation and amount behavior&lt;/span&gt;" tooltip="Withdrawal initiation and amount behavior&#10;Omni_merged_repaired.txt:827. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="WithdrawalEvent" SourceFile="Omni_merged_repaired.txt" SourceLine="827" Role="Withdrawal initiation and amount behavior">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1000" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-GAIndexParam" label="&lt;b&gt;GAIndexParam&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Option budgets, prices and crediting parameters&lt;/span&gt;" tooltip="Option budgets, prices and crediting parameters&#10;Omni_merged_repaired.txt:1781. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="GAIndexParam" SourceFile="Omni_merged_repaired.txt" SourceLine="1781" Role="Option budgets, prices and crediting parameters">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1076" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-GASACreditRate" label="&lt;b&gt;GASACreditRate&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Credited-rate calculation&lt;/span&gt;" tooltip="Credited-rate calculation&#10;Omni_merged_repaired.txt:1987. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="GASACreditRate" SourceFile="Omni_merged_repaired.txt" SourceLine="1987" Role="Credited-rate calculation">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1152" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-GASAAccountValue" label="&lt;b&gt;GASAAccountValue&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Apply amounts to account value&lt;/span&gt;" tooltip="Apply amounts to account value&#10;Omni_merged_repaired.txt:981. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="GASAAccountValue" SourceFile="Omni_merged_repaired.txt" SourceLine="981" Role="Apply amounts to account value">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1228" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-WeightGASAReturn" label="&lt;b&gt;WeightGASAReturn&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Market-scenario consumer, not an IA generator&lt;/span&gt;" tooltip="Market-scenario consumer, not an IA generator&#10;Omni_merged_repaired.txt:1703. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="WeightGASAReturn" SourceFile="Omni_merged_repaired.txt" SourceLine="1703" Role="Market-scenario consumer, not an IA generator">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1304" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-DiscountRates" label="&lt;b&gt;DiscountRates&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Discount-rate selection&lt;/span&gt;" tooltip="Discount-rate selection&#10;Omni_merged_repaired.txt:2788. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="DiscountRates" SourceFile="Omni_merged_repaired.txt" SourceLine="2788" Role="Discount-rate selection">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1380" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-HypotheticalPortfolio" label="&lt;b&gt;HypotheticalPortfolio&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Different portfolio / default methodology&lt;/span&gt;" tooltip="Different portfolio / default methodology&#10;Omni_merged_repaired.txt:2851. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="HypotheticalPortfolio" SourceFile="Omni_merged_repaired.txt" SourceLine="2851" Role="Different portfolio / default methodology">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1456" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-RandomNormal" label="&lt;b&gt;RandomNormal&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Different visible random-stream setup&lt;/span&gt;" tooltip="Different visible random-stream setup&#10;Omni_merged_repaired.txt:2804. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="RandomNormal" SourceFile="Omni_merged_repaired.txt" SourceLine="2804" Role="Different visible random-stream setup">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1532" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-HybridIndex" label="&lt;b&gt;HybridIndex&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Index-by-index algorithm comparison&lt;/span&gt;" tooltip="Index-by-index algorithm comparison&#10;Omni_merged_repaired.txt:2821. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="HybridIndex" SourceFile="Omni_merged_repaired.txt" SourceLine="2821" Role="Index-by-index algorithm comparison">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1608" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-GAAPVEDHC" label="&lt;b&gt;GAAPVEDHC&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Host / claim valuation comparison&lt;/span&gt;" tooltip="Host / claim valuation comparison&#10;Omni_merged_repaired.txt:2645. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="GAAPVEDHC" SourceFile="Omni_merged_repaired.txt" SourceLine="2645" Role="Host / claim valuation comparison">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1684" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="omni-GAAPMRB" label="&lt;b&gt;GAAPMRB&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Benefit valuation comparison&lt;/span&gt;" tooltip="Benefit valuation comparison&#10;Omni_merged_repaired.txt:2690. Interfaces are visible; imported bodies are unavailable." Model="Omni" Library="GAAPMRB" SourceFile="Omni_merged_repaired.txt" SourceLine="2690" Role="Benefit valuation comparison">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFFFF;strokeColor=#94A3B8;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="1640" y="1760" width="470" height="60" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="action-link-0" label="" tooltip="Extract shared components: Policy" MappedResponsibility="" Action="Extract shared components" Explanation="Extract shared components: Policy" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="a-extract" target="ia-Policy">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="410" y="490.0" />
+                <mxPoint x="410" y="333.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-1" label="" tooltip="Make configurable: Policy" MappedResponsibility="" Action="Make configurable" Explanation="Make configurable: Policy" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#B45309;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#B45309;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-configure" source="a-configure" target="ia-Policy">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="453" y="756.0" />
+                <mxPoint x="453" y="350.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-2" label="" tooltip="Extract shared components: BaseMort" MappedResponsibility="" Action="Extract shared components" Explanation="Extract shared components: BaseMort" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="a-extract" target="ia-BaseMort">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="410" y="490.0" />
+                <mxPoint x="410" y="502.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-3" label="" tooltip="Extract shared components: Mortality_DynLapse" MappedResponsibility="" Action="Extract shared components" Explanation="Extract shared components: Mortality_DynLapse" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3333333333333333;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="a-extract" target="ia-Mortality_DynLapse">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="410" y="490.0" />
+                <mxPoint x="410" y="642.67" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-4" label="" tooltip="Keep IA implementation: Mortality_DynLapse" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: Mortality_DynLapse" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.6666666666666666;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-Mortality_DynLapse">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="665.33" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-5" label="" tooltip="Keep IA implementation: AnnFac" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: AnnFac" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-AnnFac">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="806.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-6" label="" tooltip="Keep IA implementation: DeathEvent" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: DeathEvent" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-DeathEvent">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="882.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-7" label="" tooltip="Keep IA implementation: LapseEvent" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: LapseEvent" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-LapseEvent">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="958.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-8" label="" tooltip="Extend Omni: WithdrawalEvent" MappedResponsibility="" Action="Extend Omni" Explanation="Extend Omni: WithdrawalEvent" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#7E22CE;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#7E22CE;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extend" source="a-extend" target="ia-WithdrawalEvent">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="496" y="1060.0" />
+                <mxPoint x="496" y="1034.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-9" label="" tooltip="Make configurable: RateSetting" MappedResponsibility="" Action="Make configurable" Explanation="Make configurable: RateSetting" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#B45309;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#B45309;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-configure" source="a-configure" target="ia-RateSetting">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="453" y="756.0" />
+                <mxPoint x="453" y="1110.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-10" label="" tooltip="Extract shared components: InterestCredit" MappedResponsibility="" Action="Extract shared components" Explanation="Extract shared components: InterestCredit" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3333333333333333;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="a-extract" target="ia-InterestCredit">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="410" y="490.0" />
+                <mxPoint x="410" y="1174.67" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-11" label="" tooltip="Keep IA implementation: HullWhite" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: HullWhite" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-HullWhite">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="1262.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-12" label="" tooltip="Keep IA implementation: InverseGamma" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: InverseGamma" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-InverseGamma">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="1338.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-13" label="" tooltip="Keep IA implementation: ThreeBondPortfolio" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: ThreeBondPortfolio" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-ThreeBondPortfolio">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="1414.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-14" label="" tooltip="Keep IA implementation: RandomNormal" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: RandomNormal" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-RandomNormal">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="1490.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-15" label="" tooltip="Defer replacement: HybridIndex" MappedResponsibility="" Action="Defer replacement" Explanation="Defer replacement: HybridIndex" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#DC2626;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#DC2626;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-defer" source="a-defer" target="ia-HybridIndex">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="582" y="1668.0" />
+                <mxPoint x="582" y="1566.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-16" label="" tooltip="Extend Omni: ESG_Service" MappedResponsibility="" Action="Extend Omni" Explanation="Extend Omni: ESG_Service" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#7E22CE;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#7E22CE;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extend" source="a-extend" target="ia-ESG_Service">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="496" y="1060.0" />
+                <mxPoint x="496" y="1642.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-17" label="" tooltip="Keep IA implementation: Gaap" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: Gaap" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-Gaap">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="1794.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-18" label="" tooltip="Keep IA implementation: Policy" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: Policy" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-Policy">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="367.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="action-link-19" label="" tooltip="Keep IA implementation: InterestCredit" MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA implementation: InterestCredit" MappingType="Action assignment">
+          <mxCell style="edgeStyle=segmentEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.6666666666666666;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="a-keep" target="ia-InterestCredit">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="539" y="1364.0" />
+                <mxPoint x="539" y="1197.33" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-1" label="" tooltip="Move version and row selection out of Policy; preserve legacy precedence." MappedResponsibility="Select assumptions" Action="Extract shared components" Explanation="Move version and row selection out of Policy; preserve legacy precedence." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-Policy" target="omni-ProductParam">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="333.0" />
+                <mxPoint x="1555" y="270.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-2" label="" tooltip="Narrow Policy to product and rider setup; GMxBInfo is the structural reference." MappedResponsibility="Product terms" Action="Make configurable" Explanation="Narrow Policy to product and rider setup; GMxBInfo is the structural reference." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#B45309;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#B45309;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-configure" source="ia-Policy" target="omni-GMxBInfo">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="350.0" />
+                <mxPoint x="1555" y="346.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-3" label="" tooltip="Separate renewal and charge-period responsibilities; preserve IA timing." MappedResponsibility="Renewal dates" Action="Extract shared components" Explanation="Separate renewal and charge-period responsibilities; preserve IA timing." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-Policy" target="omni-TermRenewSurrChg">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="367.0" />
+                <mxPoint x="1555" y="422.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-4" label="" tooltip="Separate improvement from final mortality; formula and basis parity remain to be established." MappedResponsibility="Improvement" Action="Extract shared components" Explanation="Separate improvement from final mortality; formula and basis parity remain to be established." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-BaseMort" target="omni-AnnImpvFac">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="490.67" />
+                <mxPoint x="1555" y="498.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-5" label="" tooltip="Expose selected-basis mortality outputs without changing spouse / GLB / study-date rules." MappedResponsibility="Mortality rates" Action="Extract shared components" Explanation="Expose selected-basis mortality outputs without changing spouse / GLB / study-date rules." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.6666666666666666;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-BaseMort" target="omni-MortAnnImpv">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="513.33" />
+                <mxPoint x="1555" y="559.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-6" label="" tooltip="Separate the mortality responsibility. Do not merge distinct event and APV bases." MappedResponsibility="Mortality" Action="Extract shared components" Explanation="Separate the mortality responsibility. Do not merge distinct event and APV bases." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-Mortality_DynLapse" target="omni-MortAnnImpv">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="633.6" />
+                <mxPoint x="1555" y="574.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-7" label="" tooltip="Separate base / dynamic lapse from mortality and monetary benefit outputs." MappedResponsibility="Lapse probability" Action="Extract shared components" Explanation="Separate base / dynamic lapse from mortality and monetary benefit outputs." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-Mortality_DynLapse" target="omni-DynamicLapse">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="647.2" />
+                <mxPoint x="1555" y="650.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-8" label="" tooltip="Separate ITM interface; source does not establish the full Omni economic dependency chain." MappedResponsibility="ITM interface" Action="Extract shared components" Explanation="Separate ITM interface; source does not establish the full Omni economic dependency chain." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.6;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-Mortality_DynLapse" target="omni-ITM_CB">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="660.8" />
+                <mxPoint x="1555" y="726.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-9" label="" tooltip="Keep IA MAWA / PIP rules until their ownership and complete Omni coverage are established." MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA MAWA / PIP rules until their ownership and complete Omni coverage are established." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.8;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-Mortality_DynLapse" target="omni-GLBPartialWD">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="674.4" />
+                <mxPoint x="1555" y="802.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-10" label="" tooltip="Keep IA specialized APV / LAD. A basic factor is not a replacement for monetary benefit values." MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep IA specialized APV / LAD. A basic factor is not a replacement for monetary benefit values." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-AnnFac" target="omni-AnnuityFactor">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="806.0" />
+                <mxPoint x="1555" y="878.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-11" label="" tooltip="Partial family / Flex comparison only; keep IA family, continuation and confinement state." MappedResponsibility="" Action="Keep IA implementation" Explanation="Partial family / Flex comparison only; keep IA family, continuation and confinement state." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-DeathEvent" target="omni-MortAnnImpv">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="870.67" />
+                <mxPoint x="1555" y="589.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-12" label="" tooltip="Keep sampled death events; policy-count outputs do not establish event-path equivalence." MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep sampled death events; policy-count outputs do not establish event-path equivalence." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.6666666666666666;exitDx=0;exitDy=0;entryX=0;entryY=0.3333333333333333;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-DeathEvent" target="omni-Decrement">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="893.33" />
+                <mxPoint x="1555" y="944.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-13" label="" tooltip="Keep sampled lapse and post-death order; do not replace events with fractional counts." MappedResponsibility="" Action="Keep IA implementation" Explanation="Keep sampled lapse and post-death order; do not replace events with fractional counts." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.6666666666666666;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-LapseEvent" target="omni-Decrement">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="958.0" />
+                <mxPoint x="1555" y="964.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-14" label="" tooltip="Extend selected start / amount / utilization interfaces only for confirmed missing IA capabilities." MappedResponsibility="IA method coverage" Action="Extend Omni" Explanation="Extend selected start / amount / utilization interfaces only for confirmed missing IA capabilities." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7E22CE;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#7E22CE;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extend" source="ia-WithdrawalEvent" target="omni-WithdrawalEvent">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="1034.0" />
+                <mxPoint x="1555" y="1030.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-15" label="" tooltip="Separate budget determination, option prices and parameter solving; preserve IA strategy methods." MappedResponsibility="Budget / parameters" Action="Make configurable" Explanation="Separate budget determination, option prices and parameter solving; preserve IA strategy methods." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#B45309;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#B45309;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-configure" source="ia-RateSetting" target="omni-GAIndexParam">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="1110.0" />
+                <mxPoint x="1555" y="1091.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-16" label="" tooltip="Extract a verified return-to-credit method; preserve term history and credit timing." MappedResponsibility="Credit rate" Action="Extract shared components" Explanation="Extract a verified return-to-credit method; preserve term history and credit timing." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-InterestCredit" target="omni-GASACreditRate">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="1174.67" />
+                <mxPoint x="1555" y="1182.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-17" label="" tooltip="Separate application of credited dollars from calculating a credit rate; retain IA account stages." MappedResponsibility="Credited dollars" Action="Extract shared components" Explanation="Separate application of credited dollars from calculating a credit rate; retain IA account stages." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563EB;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#2563EB;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.6666666666666666;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extract" source="ia-InterestCredit" target="omni-GASAAccountValue">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="1197.33" />
+                <mxPoint x="1555" y="1258.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-18" label="" tooltip="Retain IA rate generation. The Omni scenario-consumption interface is a comparison point." MappedResponsibility="" Action="Keep IA implementation" Explanation="Retain IA rate generation. The Omni scenario-consumption interface is a comparison point." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;entryX=0;entryY=0.3333333333333333;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-HullWhite" target="omni-WeightGASAReturn">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1250.67" />
+                <mxPoint x="1555" y="1324.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-19" label="" tooltip="Preserve IA curve bases and dated discount outputs; no equivalent generator is demonstrated." MappedResponsibility="" Action="Keep IA implementation" Explanation="Preserve IA curve bases and dated discount outputs; no equivalent generator is demonstrated." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.6666666666666666;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-HullWhite" target="omni-DiscountRates">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1273.33" />
+                <mxPoint x="1555" y="1410.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-20" label="" tooltip="Retain IA equity and volatility generation; compare the market-path consumption interface." MappedResponsibility="" Action="Keep IA implementation" Explanation="Retain IA equity and volatility generation; compare the market-path consumption interface." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;entryX=0;entryY=0.6666666666666666;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-InverseGamma" target="omni-WeightGASAReturn">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1326.67" />
+                <mxPoint x="1555" y="1344.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-21" label="" tooltip="Retain IA pricing data / outputs; the Omni price-input role is a comparison, not a generator replacement." MappedResponsibility="" Action="Keep IA implementation" Explanation="Retain IA pricing data / outputs; the Omni price-input role is a comparison, not a generator replacement." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.6666666666666666;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-InverseGamma" target="omni-GAIndexParam">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1349.33" />
+                <mxPoint x="1555" y="1106.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-22" label="" tooltip="Preserve IA three-bond construction; Omni has a different portfolio/default methodology." MappedResponsibility="" Action="Keep IA implementation" Explanation="Preserve IA three-bond construction; Omni has a different portfolio/default methodology." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-ThreeBondPortfolio" target="omni-HypotheticalPortfolio">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1414.0" />
+                <mxPoint x="1555" y="1486.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-23" label="" tooltip="Preserve seed, draw allocation, correlation and antithetic configuration." MappedResponsibility="" Action="Keep IA implementation" Explanation="Preserve seed, draw allocation, correlation and antithetic configuration." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-RandomNormal" target="omni-RandomNormal">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1490.0" />
+                <mxPoint x="1555" y="1562.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-24" label="" tooltip="Compare each index algorithm, history, covariance and pricing requirement before replacement." MappedResponsibility="" Action="Defer replacement" Explanation="Compare each index algorithm, history, covariance and pricing requirement before replacement." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#DC2626;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#DC2626;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-defer" source="ia-HybridIndex" target="omni-HybridIndex">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1566.0" />
+                <mxPoint x="1555" y="1638.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-25" label="" tooltip="Expose required IA pricing outputs through an optional Omni-facing provider interface; first verify actual consumers." MappedResponsibility="Pricing interface" Action="Extend Omni" Explanation="Expose required IA pricing outputs through an optional Omni-facing provider interface; first verify actual consumers." MappingType="Proposed responsibility mapping">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7E22CE;strokeWidth=2;fontFamily=Arial;fontSize=14;fontColor=#7E22CE;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-extend" source="ia-ESG_Service" target="omni-GAIndexParam">
+            <mxGeometry relative="1" as="geometry" x="-0.55" y="-12">
+              <Array as="points">
+                <mxPoint x="1280" y="1642.0" />
+                <mxPoint x="1555" y="1121.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-26" label="" tooltip="Retain IA host / claim / LAD decomposition and discount bases." MappedResponsibility="" Action="Keep IA implementation" Explanation="Retain IA host / claim / LAD decomposition and discount bases." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-Gaap" target="omni-GAAPVEDHC">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1782.67" />
+                <mxPoint x="1555" y="1714.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="mapping-27" label="" tooltip="Retain IA product-specific benefit valuation; equivalent accounting support is not established." MappedResponsibility="" Action="Keep IA implementation" Explanation="Retain IA product-specific benefit valuation; equivalent accounting support is not established." MappingType="Comparison only">
+          <mxCell style="edgeStyle=none;curved=1;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;strokeWidth=2;dashed=1;dashPattern=7 5;fontFamily=Arial;fontSize=14;fontColor=#64748B;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.6666666666666666;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;jumpSize=6;" edge="1" parent="links-keep" source="ia-Gaap" target="omni-GAAPMRB">
+            <mxGeometry relative="1" as="geometry" x="0" y="0">
+              <Array as="points">
+                <mxPoint x="1280" y="1805.33" />
+                <mxPoint x="1555" y="1790.0" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </object>
+        <object id="reading1" label="ONE → MANY: Policy splits across ProductParam, GMxBInfo and TermRenewSurrChg. MANY → ONE: GAIndexParam relates to RateSetting, InverseGamma and ESG_Service, with different actions." tooltip="">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=16;fontColor=#334155;fontStyle=0;spacing=0;" vertex="1" parent="background">
+            <mxGeometry x="40" y="1910" width="2070" height="44" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="reading2" label="Use View → Layers to show one action at a time. Hover a module or link for a short explanation and source references. Move shapes / edit connectors directly; every object is native draw.io." tooltip="">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=16;fontColor=#334155;fontStyle=0;spacing=0;" vertex="1" parent="background">
+            <mxGeometry x="40" y="1956" width="2070" height="42" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="scope" label="Scope: imported IA libraries only. Root Cashflow, time grids and assumption selectors remain additional refactoring work. Source bodies are missing / partly damaged; no model tests or production changes were made." tooltip="">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=15;fontColor=#334155;fontStyle=0;spacing=0;" vertex="1" parent="background">
+            <mxGeometry x="40" y="2000" width="2070" height="46" as="geometry" />
+          </mxCell>
+        </object>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
