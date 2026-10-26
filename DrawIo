@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" agent="Library architecture review" version="24.7.17" type="device">
+  <diagram id="ia-omni-overview" name="Action - IA - Omni">
+    <mxGraphModel dx="1800" dy="1500" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2180" pageHeight="2080" math="0" shadow="0" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="background" value="Layout and reading notes" parent="0" />
+        <mxCell id="links-extract" value="01 - Extract shared components links" parent="0" />
+        <mxCell id="links-configure" value="02 - Make configurable links" parent="0" />
+        <mxCell id="links-extend" value="03 - Extend Omni links" parent="0" />
+        <mxCell id="links-keep" value="04 - Keep IA implementation links" parent="0" />
+        <mxCell id="links-defer" value="05 - Defer replacement links" parent="0" />
+        <mxCell id="links-reuse" value="06 - Reuse unchanged links" parent="0" />
+        <mxCell id="modules" value="Action and library nodes" parent="0" />
+        <object id="title" label="IA → Omni | Library Migration Map" tooltip="">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=30;fontColor=#0F172A;fontStyle=1;spacing=0;" vertex="1" parent="background">
+            <mxGeometry x="40" y="24" width="2080" height="46" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="subtitle" label="Proposed actions and responsibility mappings · 16 IA libraries · 21 Omni comparison / target libraries · 26 October 2026" tooltip="">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=17;fontColor=#334155;fontStyle=0;spacing=0;" vertex="1" parent="background">
+            <mxGeometry x="40" y="76" width="2080" height="30" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="meaning" label="Solid colored links = proposed extraction, configuration or extension. Dashed links = retain IA / defer; the Omni library is a comparison point." tooltip="">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=17;fontColor=#334155;fontStyle=0;spacing=0;" vertex="1" parent="background">
+            <mxGeometry x="40" y="110" width="2080" height="34" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="qualification" label="A mapping is not proof of product support or an execution dependency. Start with IA logic; reuse only after input, state, timing and formula parity are established." tooltip="">
+          <mxCell style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Arial;fontSize=16;fontColor=#334155;fontStyle=0;spacing=0;" vertex="1" parent="background">
+            <mxGeometry x="40" y="145" width="2080" height="30" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="h-action" label="ACTION · Proposed change" tooltip="">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=none;fontColor=#FFFFFF;fontFamily=Arial;fontSize=19;fontStyle=1;align=left;spacingLeft=14;" vertex="1" parent="background">
+            <mxGeometry x="40" y="185" width="300" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="h-ia" label="IA · All 16 imported libraries" tooltip="">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=none;fontColor=#FFFFFF;fontFamily=Arial;fontSize=19;fontStyle=1;align=left;spacingLeft=14;" vertex="1" parent="background">
+            <mxGeometry x="740" y="185" width="460" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="h-omni" label="OMNI · Corresponding responsibilities" tooltip="">
+          <mxCell style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=none;fontColor=#FFFFFF;fontFamily=Arial;fontSize=19;fontStyle=1;align=left;spacingLeft=14;" vertex="1" parent="background">
+            <mxGeometry x="1640" y="185" width="470" height="40" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="a-extract" label="&lt;b&gt;Extract shared components&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Separate responsibilities first. Share calculations only after equivalence is established.&lt;/span&gt;" tooltip="Separate responsibilities first. Share calculations only after equivalence is established." Action="Extract shared components">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=15;" vertex="1" parent="modules">
+            <mxGeometry x="40" y="430.0" width="300" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="a-configure" label="&lt;b&gt;Make configurable&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Choose a small set of coherent methods; preserve IA product rules.&lt;/span&gt;" tooltip="Choose a small set of coherent methods; preserve IA product rules." Action="Make configurable">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FFFBEB;strokeColor=#B45309;strokeWidth=2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=15;" vertex="1" parent="modules">
+            <mxGeometry x="40" y="696" width="300" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="a-extend" label="&lt;b&gt;Extend Omni&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Add an interface or method for a confirmed IA capability gap.&lt;/span&gt;" tooltip="Add an interface or method for a confirmed IA capability gap." Action="Extend Omni">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FAF5FF;strokeColor=#7E22CE;strokeWidth=2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=15;" vertex="1" parent="modules">
+            <mxGeometry x="40" y="1000" width="300" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="a-keep" label="&lt;b&gt;Keep IA implementation&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Retain IA logic. Dashed right-side links identify comparison points only.&lt;/span&gt;" tooltip="Retain IA logic. Dashed right-side links identify comparison points only." Action="Keep IA implementation">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F1F5F9;strokeColor=#64748B;strokeWidth=2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=15;" vertex="1" parent="modules">
+            <mxGeometry x="40" y="1304" width="300" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="a-defer" label="&lt;b&gt;Defer replacement&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Confirm product coverage, state and algorithm before selecting an implementation.&lt;/span&gt;" tooltip="Confirm product coverage, state and algorithm before selecting an implementation." Action="Defer replacement">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#FEF2F2;strokeColor=#DC2626;strokeWidth=2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=15;" vertex="1" parent="modules">
+            <mxGeometry x="40" y="1608" width="300" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="a-reuse" label="&lt;b&gt;Reuse unchanged&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;No complete Omni library is confirmed as an unchanged replacement.&lt;/span&gt;" tooltip="No complete Omni library is confirmed as an unchanged replacement." Action="Reuse unchanged">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F0FDF4;strokeColor=#15803D;strokeWidth=2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=15;" vertex="1" parent="modules">
+            <mxGeometry x="40" y="1760" width="300" height="120" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-Policy" label="&lt;b&gt;01 · Policy&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Split selection, terms and renewal. Preserve NPA history.&lt;/span&gt;" tooltip="Split selection, terms and renewal. Preserve NPA history.&#10;IA_ESG_combined.txt:729; import R2. See comparison matrix for qualifications." Model="IA" Library="Policy" SourceFile="IA_ESG_combined.txt" SourceLine="729" ImportRef="R2" Recommendation="Split selection, terms and renewal. Preserve NPA history.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="316" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-BaseMort" label="&lt;b&gt;02 · BaseMort&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Separate improvement and final rates; preserve mortality bases.&lt;/span&gt;" tooltip="Separate improvement and final rates; preserve mortality bases.&#10;IA_ESG_combined.txt:972; import R3. See comparison matrix for qualifications." Model="IA" Library="BaseMort" SourceFile="IA_ESG_combined.txt" SourceLine="972" ImportRef="R3" Recommendation="Separate improvement and final rates; preserve mortality bases.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="468" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-Mortality_DynLapse" label="&lt;b&gt;03 · Mortality_DynLapse&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Split mortality, lapse, ITM and income amounts.&lt;/span&gt;" tooltip="Split mortality, lapse, ITM and income amounts.&#10;IA_ESG_combined.txt:1125; import R9. See comparison matrix for qualifications." Model="IA" Library="Mortality_DynLapse" SourceFile="IA_ESG_combined.txt" SourceLine="1125" ImportRef="R9" Recommendation="Split mortality, lapse, ITM and income amounts.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
+            <mxGeometry x="740" y="620" width="460" height="68" as="geometry" />
+          </mxCell>
+        </object>
+        <object id="ia-AnnFac" label="&lt;b&gt;04 · AnnFac&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Keep specialized APV, benefit values and LAD cash flows.&lt;/span&gt;" tooltip="Keep specialized APV, benefit values and LAD cash flows.&#10;IA_ESG_combined.txt:1035; import R7. See comparison matrix for qualifications." Model="IA" Library="AnnFac" SourceFile="IA_ESG_combined.txt" SourceLine="1035" ImportRef="R7" Recommendation="Keep specialized APV, benefit values and LAD cash flows.">
+          <mxCell style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#F8FAFC;strokeColor=#CBD5E1;strokeWidth=1.2;fontColor=#0F172A;fontFamily=Arial;fontSize=20;align=left;spacing=12;" vertex="1" parent="modules">
